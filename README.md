@@ -24,3 +24,5 @@ This repo documents notes from reviewing SQL which the author took the notes whi
 14. DML work with data inside tables: SELECT (get data), INSERT (add data), UPDATE (change data), Delete (delete data)<br >
 15. DDL define database structure: CREATE (create table), ALTER (change table structure), DROP (remove table)<br >
 16. DBA = database administrator<br >
+## 17. SELECT FROM<br >
+Syntax: `SELECT <column> FROM <table_name>` e.g. `SELECT Name FROM Customers_prc;` <br >
