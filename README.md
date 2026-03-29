@@ -35,6 +35,7 @@ CREATE TABLE Employees (
 	Department CHARVAR(50),
 	Hire_Date DATE
 );
+
 --- CREATE TABLE must include:
 ---		table name (Students)
 ---		column name (ID, Name, Major),
