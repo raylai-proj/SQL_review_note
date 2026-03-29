@@ -26,3 +26,19 @@ This repo documents notes from reviewing SQL which the author took the notes whi
 16. DBA = database administrator<br >
 ## 17. SELECT FROM<br >
 Syntax: `SELECT <column> FROM <table_name>` e.g. `SELECT Name FROM Customers_prc;` <br >
+## 18. CREATE TABLE<br >
+example:
+```
+CREATE TABLE Employees (
+	Employee_ID INT PRIMARY KEY,
+	Name CHARVAR(100),
+	Department CHARVAR(50),
+	Hire_Date DATE
+);
+--- CREATE TABLE must include:
+---		table name (Students)
+---		column name (ID, Name, Major),
+---		data type (INT, VARCHAR, DATE)
+---		#	VARCHAR(50): 50 = Max length
+---		Option: PRIMARY KEY
+```
