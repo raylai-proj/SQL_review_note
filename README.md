@@ -18,3 +18,9 @@ This repo documents notes from reviewing SQL which the author took the notes whi
 -  E.g. __Customer table__ has __customer_id__. __Summary table__ has __customer_id__ and __book_id__ to combine an unique record. <br >
 9. Database stores real-world data from social media to bank account. To work with data, first we learn database.<br >
 10. Basic SQL data type: __VARCHAR__ (string,text=Name), __INT__ (number=age), __DATE__ (birthday, release date)<br >
+11. SQL = Structured Query Language<br >
+12. SQL is querying, not programming<br >
+13. SQL has DML (data manipulation) and DDL (data definition)<br >
+14. DML work with data inside tables: SELECT (get data), INSERT (add data), UPDATE (change data), Delete (delete data)<br >
+15. DDL define database structure: CREATE (create table), ALTER (change table structure), DROP (remove table)<br >
+16. DBA = database administrator<br >
