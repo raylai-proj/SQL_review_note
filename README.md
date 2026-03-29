@@ -48,5 +48,9 @@ example: <br >
 ALTER TABLE Students
 	ADD Email VARCHAR(100);
 
----	Add new column "Email": need: 1. ALTER TABLE, 2. table name: Students, 3. action: ADD, REMOVE, 4. new col name + data type
+---	Add new column "Email": need:
+	1. ALTER TABLE,
+	2. table name: Students,
+	3. action: ADD, REMOVE,
+	4. new col name + data type
 ```
