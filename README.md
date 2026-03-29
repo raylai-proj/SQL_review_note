@@ -54,3 +54,10 @@ ALTER TABLE Students
 	3. action: ADD, REMOVE,
 	4. new col name + data type
 ```
+## 20. DROP TABLE<br >
+example: <br >
+```
+DROP TABLE Students;
+
+---	delete table and delete all data in that table
+```
