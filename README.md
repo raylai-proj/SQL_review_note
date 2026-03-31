@@ -95,3 +95,16 @@ UPDATE students
 --- WHERE is filter to select matched rows
 --- Always include WHERE to prevent select all rows
 ```
+## 23. DELETE
+DELETE = delete a row<br >
+syntax: <br >
+```
+DELETE FROM <table_name> WHERE <column_name> = <current_value>
+```
+example: <br >
+```
+DELETE FROM students WHERE ID = 1;
+
+--- if ID = 1 row has foreign key columns,
+--- we have to first delete referenced row, which has primary key, in sub-table 
+```
