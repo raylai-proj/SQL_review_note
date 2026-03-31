@@ -62,3 +62,20 @@ DROP TABLE Students;
 
 ---	delete table and delete all data in that table
 ```
+## Add row: INSERT, change row: UPDATE, remove row: DELETE
+## 21. INSERT INTO <table name> VALUES<br >
+syntax:
+```
+INSERT INTO <table name> VALUES
+	(<column1 value1>, <column2 value1>,..., <columnN value1>),
+	(<column1 value2>, <column2 value2>,..., <columnN value2>);
+```
+example: <br >
+```
+INSERT INTO students VALUES
+	(1, 'Alice', 'Biology'),
+	(2, 'Bob', 'History'),
+	(3, 'Cathy', 'Math');
+
+--- "INSERT INTO" match type, primary key no duplicate, ; in the end
+```
