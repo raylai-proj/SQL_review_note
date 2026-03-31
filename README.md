@@ -79,3 +79,19 @@ INSERT INTO students VALUES
 
 --- "INSERT INTO" match type, primary key no duplicate, ; in the end
 ```
+## 22. UPDATE SET WHERE
+syntax:
+```
+UPDATE <table_name>
+	SET <target_column> = <new_value>
+	WHERE <other_column> = <current_value>;
+```
+example: <br >
+```
+UPDATE students
+	SET Major = 'Chemistry', Name = 'Alicia'
+	WHERE ID = 1;
+
+--- WHERE is filter to select matched rows
+--- Always include WHERE to prevent select all rows
+```
