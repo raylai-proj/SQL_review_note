@@ -122,7 +122,7 @@ FROM customers;
 --- columns will be listed in order which we specify,
 ---	e.g. SELECT 2, 1, 3 FROM table; => 2,1,3
 ```
-## 25. Alias 別名
+## 25. AS Alias 別名
 example: <br >
 ```
 SELECT
