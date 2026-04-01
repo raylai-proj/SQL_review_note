@@ -220,7 +220,7 @@ WHERE customer_name LIKE 'joh%';
 ---		_ match 1 character
 ---		each _ replace 1 char (J___ match John)
 ```
-## 33. LIKE _ pattern matching<br>
+## 33. LIKE _ pattern matching<br >
 ```
 SELECT *
 FROM customers
