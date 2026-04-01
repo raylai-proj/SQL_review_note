@@ -132,3 +132,14 @@ FROM table1 AS alias3;
 
 ---	可以設定col跟table的Alias aka. 別名
 ```
+## 26. WHERE
+WHERE filter rows: use cols condition to find satisfied rows<br >
+```
+SELECT *
+FROM employees
+WHERE salary > 50000;
+
+--- SELECT <col1>, <col2>, <col3>
+---	FROM <table_name>
+---	WHERE <condition>;
+```
