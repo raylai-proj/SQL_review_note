@@ -173,3 +173,17 @@ WHERE salary > 50000 AND departments = 'Sales';
 ---	<>: column not this value: for filtering Value, e.g. salary <> 50000
 ---	NOT: Logical operator for condition: NOT <condition>
 ```
+## 29. NOT<br >
+Use __NOT__ in WHERE filter: <br >
+1. NOT country = 'USA';<br >
+2. department NOT IN ('Sales', 'HR', 'IT');<br >
+	- __IN__ is broader than =<br >
+3. salary NOT BETWEEN 30000 AND 50000;<br >
+	- __BETWEEN__ ... __AND__: BETWEEN always followed by AND with two values<br >
+```
+SELECT *
+FROM customers
+WHERE NOT country = 'USA';
+
+--- NOT <column_name> = <value>
+```
