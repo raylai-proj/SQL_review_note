@@ -108,3 +108,17 @@ DELETE FROM students WHERE ID = 1;
 --- if ID = 1 row has foreign key columns,
 --- we have to first delete referenced row, which has primary key, in sub-table 
 ```
+## 24. SELECT FROM
+syntax: <br >
+```
+SELECT <column1>, <column2>
+FROM <table_name>;
+```
+example: <br >
+```
+SELECT email AS "Customer_Email"
+FROM customers;
+
+--- columns will be listed in order which we specify,
+---	e.g. SELECT 2, 1, 3 FROM table; => 2,1,3
+```
