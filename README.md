@@ -157,3 +157,19 @@ WHERE unit_price < 50;
 
 --- don't have to show the filter condition column unit_price
 ```
+## 28. single quote V.S. double quote <br >
+Only use __single quote__ 'sales' for __Values__, e.g. VARCHAR, TIMESTAMP<br >
+Only use __double quote__ or __no quote__ for Column name, Table name, or Alias<br >
+1. double quote for __space__ in name: "Product Name"<br >
+2. double quote for __reserved word__: "Where"<br >
+3. double quote for __forcing case sensitivity__: "Product_Name" no matching on product_name<br >
+```
+SELECT *
+FROM employees
+WHERE salary > 50000 AND departments = 'Sales';
+
+--- filter departments has to be 'Sales' in WHERE clause
+--- WHERE can use <, >, <=, >=, <>, =
+---	<>: column not this value: for filtering Value, e.g. salary <> 50000
+---	NOT: Logical operator for condition: NOT <condition>
+```
