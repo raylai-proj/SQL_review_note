@@ -143,3 +143,17 @@ WHERE salary > 50000;
 ---	FROM <table_name>
 ---	WHERE <condition>;
 ```
+### 27. You can, but you don't have to include column in WHERE clause in SELECT list<br >
+```
+SELECT product_name, unit_price 
+FROM products 
+WHERE unit_price < 50;
+```
+V.S.
+```
+SELECT product_name
+FROM products 
+WHERE unit_price < 50;
+
+--- don't have to show the filter condition column unit_price
+```
