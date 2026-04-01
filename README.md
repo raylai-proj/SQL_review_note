@@ -187,3 +187,15 @@ WHERE NOT country = 'USA';
 
 --- NOT <column_name> = <value>
 ```
+## 30.
+```
+SELECT *
+FROM employees
+WHERE department NOT IN ('Sales', 'HR', 'IT') AND salary NOT BETWEEN 30000 AND 50000;
+	
+---	IN must follow by (), the () here is a Set, usually () is for parse order
+---	1 or 2 condition: AND at the same line,
+---	3 or more conditions: break AND into multiple lines
+---		Leading operator style: Put AND, OR at the start of new line
+---		SQL parser has operator precedence, so it won't confuse at two ANDs
+```
