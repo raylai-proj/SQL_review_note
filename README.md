@@ -122,3 +122,13 @@ FROM customers;
 --- columns will be listed in order which we specify,
 ---	e.g. SELECT 2, 1, 3 FROM table; => 2,1,3
 ```
+## 25. Alias 別名
+example: <br >
+```
+SELECT
+	col1 AS alias1,
+	col2 AS alias2
+FROM table1 AS alias3;
+
+---	可以設定col跟table的Alias aka. 別名
+```
