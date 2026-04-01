@@ -228,3 +228,11 @@ WHERE customer_name LIKE 'Sm_th';
 
 ---	LIKE 'Sm_th' match 'Smith'
 ```
+## 34. LIKE % pattern matching<br >
+```
+SELECT *
+FROM products
+WHERE product_name LIKE '%phone%';
+
+--- LIKE '%phone%' match 'smartphone' and 'phone_screen'
+```
