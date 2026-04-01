@@ -199,3 +199,11 @@ WHERE department NOT IN ('Sales', 'HR', 'IT') AND salary NOT BETWEEN 30000 AND 5
 ---		Leading operator style: Put AND, OR at the start of new line
 ---		SQL parser has operator precedence, so it won't confuse at two ANDs
 ```
+## 31. Escape from ' by '<br >
+```
+SELECT *
+FROM employees
+WHERE name = 'O''Relly';
+
+---	when value has ', add ' for escape, so 'Relly => ''Relly, and single quote for value 'O''Relly'
+```
