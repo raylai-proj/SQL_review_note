@@ -207,3 +207,16 @@ WHERE name = 'O''Relly';
 
 ---	when value has ', add ' for escape, so 'Relly => ''Relly, and single quote for value 'O''Relly'
 ```
+## 32. LIKE % _ pattern matching<br >
+```
+SELECT *
+FROM customers
+WHERE customer_name LIKE 'joh%';
+
+--- LIKE 'joh%' is pattern matching:
+---	1. LIKE 'joh%' match customer_name start with 'joh', and can have any number characters after it
+---	2. LIKE 'joh_' match only 1 character after 'joh'
+---		% match any number characters
+---		_ match 1 character
+---		each _ replace 1 char (J___ match John)
+```
