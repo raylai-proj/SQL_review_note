@@ -294,3 +294,15 @@ WHERE product_name LIKE '%e' AND category IN ('Electronics', 'Appliances');
 --- simple: (category = 'Electronics' OR category = 'Appliances')
 ---	better: category IN ('Electronics', 'Appliances')
 ```
+## 40. IN subquery<br >
+```
+SELECT *
+FROM orders
+WHERE customer_id IN (
+	SELECT customer_id
+	FROM customers
+	WHERE customer_name = 'John Smith'
+);
+
+---	IN is perfect for subquery in WHERE clause, e.g. find 'customer_id' where 'customer_id' match in customers table
+```
