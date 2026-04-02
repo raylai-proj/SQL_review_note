@@ -262,7 +262,7 @@ CREATE TABLE orders(
 SELECT *
 FROM orders
 WHERE (order_amount > 1000 AND order_status = 'Pending')
-	OR (order_status = 'Processing');
+OR (order_status = 'Processing');
 
 ---	operator precedence = logical order: NOT > AND > OR
 ---	parenthesis () used to run inside first
