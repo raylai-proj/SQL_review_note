@@ -315,3 +315,7 @@ OR category = 'Office supplies';
 
 --- IN can use along with >, AND, OR
 ```
+## 42. LIKE vs IN vs BETWEEN<br >
+LIKE: pattern match<br >
+IN: match multiple values<br >
+BETWEEN...AND: match range-based value<br >
