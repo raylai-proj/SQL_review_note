@@ -236,3 +236,15 @@ WHERE product_name LIKE '%phone%';
 
 --- LIKE '%phone%' match 'smartphone' and 'phone_screen'
 ```
+## 35. IS NULL, IS NOT NULL<br >
+```
+SELECT *
+FROM employees
+WHERE manager_id IS NULL;
+
+---	IS NULL / IS NOT NULL filtering column doesn't have / have value
+---	NULL = Unknown = missing information
+--- IS NULL / IS NOT NULL = missing data check = data quality check
+---	NULL is not 0, NULL is not empty string ''
+--- can only use IS NULL, others are wrong, e.g. = NULL, <> NULL
+```
