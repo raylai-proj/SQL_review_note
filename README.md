@@ -306,3 +306,12 @@ WHERE customer_id IN (
 
 ---	IN is perfect for subquery in WHERE clause, e.g. find 'customer_id' where 'customer_id' match in customers table
 ```
+## 41. IN combine operators<br >
+```
+SELECT *
+FROM products
+WHERE unit_price > 100 AND category IN ('Electronics', 'Appliances')
+OR category = 'Office supplies';
+
+--- IN can use along with >, AND, OR
+```
