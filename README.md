@@ -319,3 +319,13 @@ OR category = 'Office supplies';
 LIKE: pattern match<br >
 IN: match multiple values<br >
 BETWEEN...AND: match range-based value<br >
+
+## 43. BETWEEN...AND<br >
+```
+SELECT *
+FROM products
+WHERE unit_value BETWEEN 50 AND 100;
+
+--- BETWEEN 50 AND 100 include 50 and 100
+---	BETWEEN...AND is syntax. the server won't confuse with logical operator AND
+```
