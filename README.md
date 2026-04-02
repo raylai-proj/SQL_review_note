@@ -248,3 +248,12 @@ WHERE manager_id IS NULL;
 ---	NULL is not 0, NULL is not empty string ''
 --- can only use IS NULL, others are wrong, e.g. = NULL, <> NULL
 ```
+## 36. DEFAULT<br >
+```
+CREATE TABLE orders(
+	order_id INT,
+	status VARCHAR(20) DEFAULT 'pending'
+);
+
+---	DEFAULT give default value if original value = NULL, or didn't provide original value
+```
