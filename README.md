@@ -329,3 +329,14 @@ WHERE unit_value BETWEEN 50 AND 100;
 --- BETWEEN 50 AND 100 include 50 and 100
 ---	BETWEEN...AND is syntax. the server won't confuse with logical operator AND
 ```
+## 44. Date Format<br >
+```
+SELECT
+	order_id,
+	order_date,
+	order_amount
+FROM orders
+WHERE order_date BETWEEN '2023-01-01' AND '2023-06-01';
+
+---	Date format: 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS'
+```
