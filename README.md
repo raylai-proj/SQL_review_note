@@ -281,3 +281,16 @@ AND (category = 'Electronics' OR category = 'Appliances');
 ---	if know full string, use =, e.g. WHERE product_name = 'smartphone'
 ---	if only know partial string, use LIKE, e.g. WHERE product_name LIKE '%e'
 ```
+## 39. IN replace = + OR<br >
+```
+SELECT
+	product_id,
+	product_name,
+	category
+FROM products
+WHERE product_name LIKE '%e' AND category IN ('Electronics', 'Appliances');
+
+---	IN can match multiple strings, so IN can replace a lot of = + OR, e.g.
+--- simple: (category = 'Electronics' OR category = 'Appliances')
+---	better: category IN ('Electronics', 'Appliances')
+```
