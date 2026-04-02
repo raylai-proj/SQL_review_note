@@ -267,3 +267,17 @@ OR (order_status = 'Processing');
 ---	operator precedence = logical order: NOT > AND > OR
 ---	parenthesis () used to run inside first
 ```
+## 38. Operator precedence 2<br >
+```
+SELECT
+	product_id,
+	product_name,
+	category
+FROM products
+WHERE product_name LIKE '%e'
+AND (category = 'Electronics' OR category = 'Appliances');
+
+---	operator precedence AND > OR: so need () to run OR first
+---	if know full string, use =, e.g. WHERE product_name = 'smartphone'
+---	if only know partial string, use LIKE, e.g. WHERE product_name LIKE '%e'
+```
