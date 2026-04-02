@@ -257,3 +257,13 @@ CREATE TABLE orders(
 
 ---	DEFAULT give default value if original value = NULL, or didn't provide original value
 ```
+## 37. Operator precedence<br >
+```
+SELECT *
+FROM orders
+WHERE (order_amount > 1000 AND order_status = 'Pending')
+	OR (order_status = 'Processing');
+
+---	operator precedence = logical order: NOT > AND > OR
+---	parenthesis () used to run inside first
+```
