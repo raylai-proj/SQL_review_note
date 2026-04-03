@@ -400,3 +400,16 @@ WHERE unit_price > ALL (
 ```
 ## 49. SQL Comment format<br >
 SQL comment example (ctrl + space): --- \<comment\><br >
+
+## 50. IS NULL slows SQL server<br >
+```
+SELECT
+	order_id,
+	order_date AS date
+FROM orders
+WHERE customer_id IS NULL;
+
+---	We can rename column using AS (order_date AS date)
+---	We don't search the whole table for missing data row.
+---	It has to go through whole table which makes application VERY SLOW!
+```
