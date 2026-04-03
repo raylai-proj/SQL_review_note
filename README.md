@@ -381,3 +381,20 @@ WHERE unit_price > ANY (
 ---	ANY doesn't return True/False, ANY help > return True/False
 --- ANY = LOWEST
 ```
+## 48. ALL subquery<br >
+```
+SELECT
+	product_name,
+	unit_price
+FROM products
+WHERE unit_price > ALL (
+	SELECT unit_price
+	FROM products
+	WHERE category = 'Toy'
+);
+
+---	find all product_names that is more expensive than the MOST EXPENSIVE Toy product
+--- it's > return True/False
+---	ALL doesn't return True/False, ALL help > return True/False
+--- ALL = HIGHEST
+```
