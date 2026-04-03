@@ -413,3 +413,14 @@ WHERE customer_id IS NULL;
 ---	We don't search the whole table for missing data row.
 ---	It has to go through whole table which makes application VERY SLOW!
 ```
+## 51. ORDER BY, ASC, DESC<br >
+```
+SELECT
+	first_name,
+	last_name
+FROM employees
+ORDER BY first_name ASC, last_name DESC;
+
+---	sort first_name ascending, if tie, sort last_name descending
+--- ORDER BY = sorting, ASC = ascending, DESC = descending, comma , = next sorting order
+```
