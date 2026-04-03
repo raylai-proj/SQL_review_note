@@ -424,3 +424,20 @@ ORDER BY first_name ASC, last_name DESC;
 ---	sort first_name ascending, if tie, sort last_name descending
 --- ORDER BY = sorting, ASC = ascending, DESC = descending, comma , = next sorting order
 ```
+## 51-2. ORDER BY IS NULL<br >
+```
+SELECT *
+FROM employees
+ORDER BY manager_id IS NULL, manager_id ASC;
+
+--- Sort manager_id ascending, but NULL manager_id at bottom
+---	In MySQL: NULL = -infinity = smallest
+--- In PostgreSQL: NULL = infinity = highest
+--- ORDER BY manager_id will put NULL at the top (NULL = smallest)
+--- In MySQL, if we want to hide NULL in ascending: we need ascending but NULL at bottom:
+---		1. ORDER BY manager_id IS NULL, manager_id ASC;
+---		2. null manager_id = 1, non null manager_id = 0 => null at bottom, non null at top
+---		3. then, ORDER BY manager_id ASC sort manager_id ascending
+--- In MySQL, if we want Descending but NULL at top:
+---		1. ORDER BY manager_id IS NOT NULL, manager_id DESC;
+```
