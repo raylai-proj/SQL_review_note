@@ -398,3 +398,5 @@ WHERE unit_price > ALL (
 ---	ALL doesn't return True/False, ALL help > return True/False
 --- ALL = HIGHEST
 ```
+## 49. SQL Comment format<br >
+SQL comment example (ctrl + space): --- \<comment\><br >
