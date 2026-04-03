@@ -340,3 +340,18 @@ WHERE order_date BETWEEN '2023-01-01' AND '2023-06-01';
 
 ---	Date format: 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS'
 ```
+## 45. BETWEEN subquery<br >
+```
+SELECT
+	product_name,
+	unit_price
+FROM products
+WHERE unit_price BETWEEN (
+	SELECT AVG(unit_price) FROM products
+) AND (
+	SELECT MAX(unit_price) FROM products
+);
+
+---	BETWEEN A AND B: A, B accept single value => need aggregate function in subquery => not common in subquery
+---	IN accept a set of value => more common in subquery
+```
