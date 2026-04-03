@@ -355,3 +355,12 @@ WHERE unit_price BETWEEN (
 ---	BETWEEN A AND B: A, B accept single value => need aggregate function in subquery => not common in subquery
 ---	IN accept a set of value => more common in subquery
 ```
+## 46. NOT BETWEEN<br >
+```
+SELECT *
+FROM employees
+WHERE salary NOT BETWEEN 40000 AND 60000 AND department = 'Sales';
+
+---	NOT at front: NOT BETWEEN, NOT IN
+---	NOT at mid: IS NOT NULL
+```
