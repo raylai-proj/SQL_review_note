@@ -442,3 +442,14 @@ ORDER BY manager_id IS NULL, manager_id ASC;
 ---		1. ORDER BY manager_id IS NOT NULL, manager_id DESC;
 --- clause order: SELECT, FROM, WHERE, ORDER BY
 ```
+## 52. LIMIT<br >
+```
+SELECT
+ 	product_name,
+	unit_price
+FROM products
+ORDER BY unit_price DESC, LIMIT 5;
+
+---	LIMIT 5 = pick first 5 rows
+---	clause order: SELECT, FROM, WHERE, ORDER BY, LIMIT
+```
