@@ -461,3 +461,14 @@ ORDER BY order_date DESC;
 
 --- latest order_date on top
 ```
+## 54. OFFSET<br >
+```
+SELECT *
+FROM orders
+LIMIT 4 OFFSET 2;
+
+--- OFFSET 2 = skip first 2 rows
+--- LIMIT 4 OFFSET 2; = LIMIT 2, 4;
+---	use WHERE to replace OFFSET because WHERE use B-tree search faster than OFFSET
+---	e.g. OFFSET 2; = WHERE order_id > 2;
+```
