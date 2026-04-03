@@ -364,3 +364,20 @@ WHERE salary NOT BETWEEN 40000 AND 60000 AND department = 'Sales';
 ---	NOT at front: NOT BETWEEN, NOT IN
 ---	NOT at mid: IS NOT NULL
 ```
+## 47. ANY subquery<br >
+```
+SELECT
+	product_name,
+	unit_price
+FROM products
+WHERE unit_price > ANY (
+	SELECT unit_price
+	FROM products
+	WHERE catergory = 'Toy'
+);
+
+---	find all product_names that is more expensive than the CHEAPEST Toy product
+---	it's > return True/False
+---	ANY doesn't return True/False, ANY help > return True/False
+--- ANY = LOWEST
+```
