@@ -453,3 +453,11 @@ ORDER BY unit_price DESC, LIMIT 5;
 ---	LIMIT 5 = pick first 5 rows
 ---	clause order: SELECT, FROM, WHERE, ORDER BY, LIMIT
 ```
+## 53. ORDER BY TIME<br >
+```
+SELECT *
+FROM orders
+ORDER BY order_date DESC;
+
+--- latest order_date on top
+```
