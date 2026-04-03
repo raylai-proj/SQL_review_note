@@ -440,4 +440,5 @@ ORDER BY manager_id IS NULL, manager_id ASC;
 ---		3. then, ORDER BY manager_id ASC sort manager_id ascending
 --- In MySQL, if we want Descending but NULL at top:
 ---		1. ORDER BY manager_id IS NOT NULL, manager_id DESC;
+--- clause order: SELECT, FROM, WHERE, ORDER BY
 ```
