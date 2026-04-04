@@ -591,3 +591,17 @@ FROM employees;
 
 --	output unique combination of department and manager_id
 ```
+## 62. Alias hidden logic<br >
+```
+SELECT
+	department,
+	COUNT(*) AS "EmployeeCount"
+FROM employees
+GROUP BY department
+ORDER BY "EmployeeCount" DESC;
+
+--	Sometimes MySQL will treat "EmployeeCount" as text string,
+--	and based on hidden logic, it create value "EmployeeCount" and append after each row
+--	so the ORDER BY look into "EmployeeCount" value in every row, which is the same word, and didn't sort anything.
+--	Fix: cancel double quotes both in Alias and ORDER BY can fix it.
+```
