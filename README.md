@@ -472,3 +472,26 @@ LIMIT 4 OFFSET 2;
 ---	use WHERE to replace OFFSET because WHERE use B-tree search faster than OFFSET
 ---	e.g. OFFSET 2; = WHERE order_id > 2;
 ```
+## 55. aggregate function: COUNT() + GROUP BY clause<br >
+```
+SELECT
+	department,
+	COUNT(*)
+FROM employees
+GROUP BY department;
+
+---	1. show how many employees in each department
+---		how many employees: COUNT(*) or COUNT(employee_id)
+---		in each department: GROUP BY department
+---		show department for its COUNT: SELECT department
+---	2. clause order: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT, OFFSET
+---	3. GROUP BY is a clause to group output from WHERE by certain column, or multiple columns
+--- 4. AVG, COUNT, MAX, MIN, SUM are aggregate function (Group summary), only use in:
+		SELECT (see the summary)
+		HAVING (filter the summary)
+		ORDER BY (sort the summary)
+--- 5. aggregate function cannot use in WHERE, so aggregate function has to be in subquery if in WHERE
+---	6. syntax: COUNT(<column>)
+---		COUNT(*) => count all rows
+---		COUNT(column_name) => count rows "have value" in that column 
+```
