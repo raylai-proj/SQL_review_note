@@ -495,3 +495,17 @@ GROUP BY department;
 ---		COUNT(*) => count all rows
 ---		COUNT(column_name) => count rows "have value" in that column 
 ```
+## 56. aggregate function: AVG() + GROUP BY clause<br >
+```
+SELECT
+	department,
+	AVG(salary) AS average_salary
+FROM employees
+GROUP BY department;
+
+---	1. show average salary in each department
+---		average salary: AVG(salary) AS average_salary
+---		in each department: GROUP BY department
+---		show department for its average salary: SELECT department
+---	2. execute order: FROM, WHERE, GROUP BY, HAVING, SELECT
+```
