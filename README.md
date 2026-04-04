@@ -545,3 +545,12 @@ FROM employees;
 --	without GROUP BY, the output will be one row showing all salary sum up,
 --		and the department value is meaningless (the server random pick one)
 ```
+## 59. COUNT + WHERE<br >
+```
+SELECT COUNT(*) AS high_salary
+FROM employees
+WHERE salary > 50000;
+
+--	count number of employees with salary over 50000 as high_salary
+--	COUNT(*) works with WHERE to output the number of employees whose salary higher than 50000
+```
