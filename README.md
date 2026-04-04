@@ -605,3 +605,64 @@ ORDER BY "EmployeeCount" DESC;
 --	so the ORDER BY look into "EmployeeCount" value in every row, which is the same word, and didn't sort anything.
 --	Fix: cancel double quotes both in Alias and ORDER BY can fix it.
 ```
+## 63. Subquery<br >
+```
+SELECT
+	product_name,
+	unit_price
+FROM products
+WHERE unit_-price > (SELECT AVG(unit_price) FROM products);
+
+--	show product_name with unit_price higher than average unit_price
+```
+1. subquery = another query in main query<br >
+2. subquery must have parenthesis ()<br >
+3. subquery 1 line: return 1 value only (filtering by aggregate function, e.g. AVG())<br >
+4. subquery multiple lines: used for correlated subquery<br >
+5. subquery can return __1 value__, __1 row(with multiple columns)__, or __1 table__<br >
+6. subquery usecase:<br >
+	1. subquery in WHERE:<br >
+	```
+ 	--	WHERE cannot use aggregate function (AVG(), MIN(), MAX(), COUNT(), SUM())
+ 	--	but can put subquery in WHERE, and put aggregate function in subquery to filter 1 value
+ 	SELECT
+ 		product_name,
+ 		unit_price
+ 	FROM products
+ 	WHERE unit_price > (SELECT AVG(unit_price) FROM products);
+
+ 	-- subquery in WHERE doesn't need to set an Alias
+ 	```
+ 	2. subquery in FROM: used to create __"Derived table"__ (can do aggregate functions __"Twice"__ in a query)<br >
+	```
+ 	SELECT AVG(dept_total)
+ 	FROM (
+ 		SELECT
+ 			department,
+ 			COUNT(*) AS dept_total
+ 		FROM employees
+ 		GROUP BY department
+ 	) AS summary_table;
+
+ 	--	find average number of employees in each department
+ 	```
+ 	3. subquery in SELECT: create a __"Calculated column"__<br >
+	```
+ 	SELECT
+ 		first_name,
+ 		last_name,
+ 		salary,
+ 		(
+ 			SELECT AVG(salary)
+ 			FROM employees e1
+ 			WHERE e1.department = e2.department
+ 		) AS average_salary
+ 	FROM employees e2;
+
+	--	create a calculated column showing average salary of current department
+ 	-- 	e1, e2 are employees table alias
+ 	--	1. set FROM table alias: FROM employees e1
+ 	--	2. set SELECT column alias: SELECT COUNT(*) AS row_number
+ 	```
+ 	4. subquery in HAVING:<br>
+	5. subquery in CASE:<br>
