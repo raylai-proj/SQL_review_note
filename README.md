@@ -532,3 +532,16 @@ ORDER BY average_salary DESC LIMIT 2 OFFSET 2;
 --	7. MySQL: let HAVING use alias from SELECT
 		PostgreSQL: have to type 2 times
 ```
+## 58. aggregate function SUM()<br >
+```
+SELECT
+	department,
+	SUM(salary)
+FROM employees;
+-- GROUP BY department;
+
+--	find the sum of salary of whole department (or of each department)
+--	the whole table is default a group if no GROUP BY
+--	without GROUP BY, the output will be one row showing all salary sum up,
+--		and the department value is meaningless (the server random pick one)
+```
