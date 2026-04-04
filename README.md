@@ -565,3 +565,29 @@ FROM employees;
 --	1. DISTINCT used when you only want to show unique group from a list
 --	2. GROUP BY used when you want to show unique group from a list and do math on those group
 ```
+## 61. DISTINCT usage<br >
+1.	find (show) unique category:
+```
+SELECT DISTINCT department
+FROM employees;
+
+--	output each department once
+--	same as
+--	SELECT department
+--	FROM employees
+--	GROUP BY department;
+```
+2. count (show) "how many different values" in that column:
+```
+SELECT COUNT(DISTINCT department)
+FROM employees;
+
+--	output a number: how many (different) department do we have in employees?
+```
+3. show unique combination:
+```
+SELECT DISTINCT department, manager_id
+FROM employees;
+
+--	output unique combination of department and manager_id
+```
