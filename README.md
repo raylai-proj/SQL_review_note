@@ -509,3 +509,26 @@ GROUP BY department;
 ---		show department for its average salary: SELECT department
 ---	2. execute order: FROM, WHERE, GROUP BY, HAVING, SELECT
 ```
+## 57. HAVING<br >
+```
+SELECT
+	department,
+	AVG(salary) AS average_salary
+FROM employees
+WHERE manager_id IS NOT NULL
+GROUP BY department
+HAVING AVG(salary) > 50000
+ORDER BY average_salary DESC LIMIT 2 OFFSET 2;
+
+---	1. find average salary of each department that over $50,000 in descending order.
+---		Only calculate employees that are not managers.
+---		Skip the highest 2 and show the next 2 departments and average salary.
+---	2. clause order: SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT, OFFSET
+--- 3. execute order: FROM, WHERE, GROUP BY, HAVING, "SELECT", ORDER BY, LIMIT, OFFSET
+--- 4. WHERE filter single rows => filter column value IS NOT NULL
+--- 5. HAVING filter group after GROUP BY
+--- 6. you have to write aggregate function 2 times in SELECT and HAVING (HAVING no Alias, and SELECT execute after HAVING),
+		but SQL server only compute it once (type twice for clear)
+--- 7. MySQL: let HAVING use alias from SELECT
+		PostgreSQL: have to type 2 times
+```
