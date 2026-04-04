@@ -554,3 +554,14 @@ WHERE salary > 50000;
 --	count number of employees with salary over 50000 as high_salary
 --	COUNT(*) works with WHERE to output the number of employees whose salary higher than 50000
 ```
+## 60. DISTINCT<br >
+```
+SELECT DISTINCT department
+FROM employees;
+
+--	show all departments
+--	DISTINCT show the same department only once (only show the first one)
+--	DISTINCT mostly use in SELECT clause
+--	1. DISTINCT used when you only want to show unique group from a list
+--	2. GROUP BY used when you want to show unique group from a list and do math on those group
+```
