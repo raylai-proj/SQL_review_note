@@ -666,3 +666,22 @@ WHERE unit_-price > (SELECT AVG(unit_price) FROM products);
  	```
  	4. subquery in HAVING:<br>
 	5. subquery in CASE:<br>
+## 64. Correlated subquery:<br >
+```
+SELECT
+	employee_id,
+	first_name,
+	last_name,
+	salary
+FROM employees e1
+WHERE salary > (
+	SELECT AVG(salary) FROM employees e2 WHERE e2.department = e1.department
+);
+
+-- 	show employees(with employee_id, first_name, last_name, salary)
+--	whose salary are higher than their department average salary
+```
+1. In correlated subquery, every row in outer query rerun subquery,<br >
+	so `e1` in outer query means __"current row"__ in outer query,<br >
+	and `e1.department` means __"current row's department value"__<br >
+2. Correlated subquery is slow because every row runs subquery 1 time<br >
