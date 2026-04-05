@@ -693,3 +693,26 @@ FROM orders;
 --	show 1 on every rows
 --	SELECT 1 append 1 for each exist row
 ```
+## 65-2. EXISTS()<br >
+EXISTS() use to check existence of certain record<br >
+syntax: EXISTS(subquery)<br >
+EXISTS() only accepts subquery, and EXISTS mostly use in WHERE<br >
+EXISTS() return __"True"__ if subquery return 1+ row<br >
+EXISTS() return __"False"__ if subquery return 0 row<br >
+EXISTS() like AND, OR, NOT is logical operator, and it almost always used in WHERE<br >
+```
+SELECT
+	c.customer_id
+	c.customer_name
+FROM
+	customers c
+WHERE EXISTS(
+	SELECT 1
+	FROM orders o
+	WHERE o.customer_id = c.customer_id
+);
+
+--	show customer_id, customer_name if customer_id exists in orders table
+--	SELECT 1 = spit out a 1 for every matches row
+--	c and o are alias for avoiding ambiguous
+```
