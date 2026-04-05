@@ -729,3 +729,39 @@ GROUP BY department;
 --	MAX, MIN, SUM, AVG, COUNT are aggregate function
 --	MAX, MIN, SUM, AVG, COUNT exclude NULL value when computing
 ```
+## 67. Compare multiple column values in WHERE<br >
+Q: Retrieve the employee details (employee_id, first_name, last_name, department, salary) of the employee with the highest salary in each department.<br >
+1. employee_id, first_name, last_name, department, salary<br >
+2. Retrieve employee with the highest salary in each department<br >
+3. highest salary in each department<br >
+```
+SELECT
+	employee_id,
+	first_name,
+	last_name,
+	department,
+	salary
+FROM employees
+WHERE (department, salary) IN (
+	SELECT
+		department,
+		MAX(salary) AS salary
+	FROM employees
+	GROUP BY department
+);
+
+--	1. subquery: get the highest salary in each department
+--	2. match (department, salary) pair to find the rest of employee info
+--	3. Why this fail?
+--		which makes this fail:
+--		SELECT employee_info, department, MAX(salary) AS salary
+--		FROM employees
+--		GROUP BY department;
+
+--		GROUP BY department doesn't have employee_info
+--		This will collapse employee info in each department,
+--		which disconnect employee info and (department, salary) info
+--	4. when compare multiple columns, you have to paarenthesis them, e.g. (department, salary) IN...
+--	5. "=" expect subquery return 1 row, to compare with multiple rows: use IN
+```
+- IN can always replace "="<br >
