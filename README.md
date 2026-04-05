@@ -857,3 +857,15 @@ FROM orders o;
 --	put * after additional column need to specify table name,
 --	or SQL won't know which table for *
 ```
+## 73. YEAR() scalar function<br >
+syntax: YEAR( \<column_name\> ) return year of date format<br >
+Common scalar function: YEAR(order_date), UPPER(name), ROUND(price, 2), LENGTH(email)
+```
+SELECT
+	YEAR(order_date),
+	orders.*
+FROM orders;
+
+--	scalar function doesn't have "single row vs. many rows" conflict,
+--	so it doesn't need to have GROUP BY or be in subquery
+```
