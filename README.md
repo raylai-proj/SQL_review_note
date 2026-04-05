@@ -765,3 +765,26 @@ WHERE (department, salary) IN (
 --	5. "=" expect subquery return 1 row, to compare with multiple rows: use IN
 ```
 - IN can always replace "="<br >
+## 68. MIN aggregate function<br >
+```
+SELECT
+	employee_id,
+	first_name,
+	last_name,
+	department,
+	salary
+FROM employees
+WHERE salary = (SELECT MIN(salary) FROM employees);
+
+--	show employee detail (employee_id, first_name, last_name, department, salary)
+--		who has the lowest salary
+```
+1. MIN() return lowest value<br >
+2. Cannot do MIN(salary) at outer query because:<br >
+	MIN, MAX, AVG, SUM etc. are aggregate functions, which return result of MANY rows<br >
+	V.S.<br >
+	employee_id, first_name etc. are SINGLE row<br >
+Problem: put MIN(salary) at outer query cause MANY rows vs. SINGLE row conflict<br >
+Solution:
+	1. either GROUP BY other single row column in SELECT
+	2. or put MANY ROWS result (aka. aggregate function MIN(salary)) in subquery in WHERE to compare single row from outer query<br >
