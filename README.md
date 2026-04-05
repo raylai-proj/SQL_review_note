@@ -869,3 +869,16 @@ FROM orders;
 --	scalar function doesn't have "single row vs. many rows" conflict,
 --	so it doesn't need to have GROUP BY or be in subquery
 ```
+## 74. HAVING + COUNT() aggregate function<br >
+```
+SELECT
+	category,
+	COUNT(*)
+FROM products
+GROUP BY category
+HAVING COUNT(*) > 2;
+
+--	show product category has more than 2 products
+--	HAVING usually use with aggregate function
+```
+- HAVING use aggregate function to filter result after GROUP BY; WHERE filter result before GROUP BY<br >
