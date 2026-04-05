@@ -685,3 +685,11 @@ WHERE salary > (
 	so `e1` in outer query means __"current row"__ in outer query,<br >
 	and `e1.department` means __"current row's department value"__<br >
 2. Correlated subquery is slow because every row runs subquery 1 time<br >
+## 65. SELECT 1<br>
+```
+SELECT 1
+FROM orders;
+
+--	show 1 on every rows
+--	SELECT 1 append 1 for each exist row
+```
