@@ -847,3 +847,13 @@ ORDER BY order_year ASC;
 --	; means end of query => 1 query 1 ";"
 --	so no ";" after CTE
 ```
+## 72. SELECT all columns with additional column<br >
+```
+SELECT
+	EXTRACT(YEAR FROM order_date)
+	o.*
+FROM orders o;
+
+--	put * after additional column need to specify table name,
+--	or SQL won't know which table for *
+```
