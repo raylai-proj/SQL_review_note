@@ -788,3 +788,18 @@ Problem: put MIN(salary) at outer query cause MANY rows vs. SINGLE row conflict<
 Solution:
 	1. either GROUP BY other single row column in SELECT
 	2. or put MANY ROWS result (aka. aggregate function MIN(salary)) in subquery in WHERE to compare single row from outer query<br >
+## 69. HAVING + SUM aggregate function<br >
+```
+SELECT
+	department,
+	SUM(salary) AS total_salary
+FROM employees
+--	WHERE salary > 60000
+GROUP BY department
+HAVING SUM(salary) > 60000
+ORDER BY total_salary DESC
+
+--	show sum of salary as total_salary in each department in descending order
+--	WHERE salary > 60000 filter individual employee salary
+--	HAVING SUM(salary) > 60000 filter department total_salary after GROUP BY
+```
