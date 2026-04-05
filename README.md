@@ -827,3 +827,23 @@ ORDER BY order_year ASC;
 --		and see an alias, it will check SELECT and understand
 --		which alias
 ```
+## 71. CTE<br >
+__CTE__ (common table expression) create temporary table during query<br >
+syntax: WITH <table_name> AS ( \<query\> )
+```
+WITH yearlyData AS (
+	SELECT
+		EXTRACT(YEAR FROM order_date) AS order_year
+		order_amount
+	FROM orders
+)
+SELECT
+	order_year,
+	AVG(order_amount) AS AverageOrderAmount
+FROM yearlyData
+GROUP BY order_year
+ORDER BY order_year ASC;
+
+--	; means end of query => 1 query 1 ";"
+--	so no ";" after CTE
+```
