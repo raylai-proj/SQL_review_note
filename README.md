@@ -716,3 +716,16 @@ WHERE EXISTS(
 --	SELECT 1 = spit out a 1 for every matches row
 --	c and o are alias for avoiding ambiguous
 ```
+## 66. MAX() aggregate function<br >
+```
+SELECT
+	department,
+	MAX(salary) AS max_salary
+FROM employees
+GROUP BY department;
+
+--	show the largest salary in each department
+--	MAX() return the largest value
+--	MAX, MIN, SUM, AVG, COUNT are aggregate function
+--	MAX, MIN, SUM, AVG, COUNT exclude NULL value when computing
+```
