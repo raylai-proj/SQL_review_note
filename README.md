@@ -803,3 +803,27 @@ ORDER BY total_salary DESC
 --	WHERE salary > 60000 filter individual employee salary
 --	HAVING SUM(salary) > 60000 filter department total_salary after GROUP BY
 ```
+## 70. EXTRACT()<br >
+syntax: EXTRACT(keyword FROM column), e.g. EXTRACT(YEAR FROM order_date)<br >
+common keyword:<br >
+1. YEAR(2026)<br >
+2. QUARTER(1~4)<br >
+3. MONTH(1~12)<br >
+4. WEEK(1~52)<br >
+5. DAY(1~31)<br >
+6. DOW(0: Sunday ~ 6: Saturday)<br >
+7. HOUR/MINUTE/SECOND<br >
+```
+SELECT
+	EXTRACT(YEAR FROM order_date) AS order_year,
+	AVG(order_amount) AS AverageOrderAmount
+FROM orders
+GROUP BY order_year
+ORDER BY order_year ASC;
+
+--	FROM in EXTRACT is part of syntax and won't confuse SQL (SELECT...FROM)
+--	execute order: GROUP BY -> SELECT:
+--		so this is exception when engine go through GROUP BY
+--		and see an alias, it will check SELECT and understand
+--		which alias
+```
