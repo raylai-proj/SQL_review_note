@@ -63,7 +63,7 @@ DROP TABLE Students;
 --	delete table and delete all data in that table
 ```
 ## Add row: INSERT, change row: UPDATE, remove row: DELETE
-## 21. INSERT INTO <table name> VALUES<br >
+## 21. INSERT INTO \<table name\> VALUES<br >
 syntax:
 ```
 INSERT INTO <table name> VALUES
@@ -79,7 +79,7 @@ INSERT INTO students VALUES
 
 --	"INSERT INTO" match type, primary key no duplicate, ; in the end
 ```
-## 22. UPDATE SET WHERE
+## 22. UPDATE SET WHERE<br >
 syntax:
 ```
 UPDATE <table_name>
@@ -95,7 +95,7 @@ UPDATE students
 --	WHERE is filter to select matched rows
 --	Always include WHERE to prevent select all rows
 ```
-## 23. DELETE
+## 23. DELETE<br >
 DELETE = delete a row<br >
 syntax: <br >
 ```
@@ -108,7 +108,7 @@ DELETE FROM students WHERE ID = 1;
 --	if ID = 1 row has foreign key columns,
 --	we have to first delete referenced row, which has primary key, in sub-table 
 ```
-## 24. SELECT FROM
+## 24. SELECT FROM<br >
 syntax: <br >
 ```
 SELECT <column1>, <column2>
@@ -122,7 +122,7 @@ FROM customers;
 --	columns will be listed in order which we specify,
 --	e.g. SELECT 2, 1, 3 FROM table; => 2,1,3
 ```
-## 25. AS Alias 別名
+## 25. AS Alias 別名<br >
 example: <br >
 ```
 SELECT
@@ -132,7 +132,7 @@ FROM table1 AS alias3;
 
 --	可以設定col跟table的Alias aka. 別名
 ```
-## 26. WHERE
+## 26. WHERE<br >
 WHERE filter rows: use cols condition to find satisfied rows<br >
 ```
 SELECT *
