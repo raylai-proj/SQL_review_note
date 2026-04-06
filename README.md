@@ -882,3 +882,33 @@ HAVING COUNT(*) > 2;
 --	HAVING usually use with aggregate function
 ```
 - HAVING use aggregate function to filter result after GROUP BY; WHERE filter result before GROUP BY<br >
+## 75. DATE_FORMAT<br >
+syntax: DATE_FORMAT(\<column\>, \<format\>) AS alias<br >
+format:<br >
+```
+%Y: 2026, %y: 26
+%M: February, %m: 02 (leading zero), %b: Feb
+%D: 03st (with suffix), %d: 03 (leading zero), %e: 3 (no leading zero)
+%H: 00~23, %h: 01~12
+%i: 00~59
+%s: 00~59
+%p: AM, PM
+%W: Monday~Sunday, %a: Mon~Sun
+```
+common use case: '%Y-%m', ISO format: '%Y-%m-%d'<br >
+DATE_FORMAT change "Date" format to "String" format, so sorting will be different<br >
+Solution: Always use '%Y-%m' or '%Y-%m-%d' which makes sorting the same<br >
+```
+SELECT
+	month,
+	SUM(amount) AS monthly_sales
+FROM (
+	SELECT
+		DATE_FORMAT(order_date, '%Y-%m) AS month,
+		order_amount AS amount
+	FROM orders
+)
+GROUP BY month;
+
+--	show monthly_sales in orders for each month
+```
