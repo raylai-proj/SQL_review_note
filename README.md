@@ -1096,3 +1096,26 @@ WHERE customer_id IN (
 SHOW TABLES;	--	show all table names on SQL
 SHOW TABLES LIKE 'o%';	--	show all table names start with o on SQL
 ```
+## 83. CASE TYPE<br >
+CASE has 2 types:<br >
+1. searched CASE (No specific expression)<br >
+2. the simple CASE (with specific expression)<br >
+- searched CASE:<br >
+```
+CASE
+	WHEN order_amount > 1000 THEN 'high priority'
+	ELSE 'average priority'
+END AS order_status_2025
+```
+pros: can compare different columns, write column after each WHEN<br >
+cons: have to write different column names multiple times<br >
+<br >
+- simple CASE:<br >
+```
+CASE order_status
+	WHEN 'completed' THEN 'drop'
+	ELSE 'keep'
+END AS order_status_2025
+```
+pros: only compare 1 column value, write column after CASE only once<br >
+cons: can only use 1 column, and can only do check if value is the same, no >, < comparison<br >
