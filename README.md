@@ -976,3 +976,79 @@ GROUP BY EXTRACT(YEAR FROM customer_since);
 Question: GROUP BY execute eariler than SELECT, why SELECT cannot use Alias (AS) created by GROUP BY?<br >
 Answer: the GROUP BY doesn't allow `AS`, only SELECT and FROM can use `AS`<br >
 Solution: repeat same expression in GROUP BY and SELECT
+## 79. subquery vs. CTE, + CASE<br >
+subquery version:<br >
+```
+SELECT
+	region,
+	revenue_2022,
+	revenue_2023,
+	(revenue_2023 - revenue_2022) / revenue_2022 AS growth_rate
+FROM (
+	SELECT
+		region,
+		SUM(CASE WHEN year=2022 THEN revenue END) AS revenue_2022,
+		SUM(CASE WHEN year=2023 THEN revenue END) AS revenue_2023
+	FROM sales
+	GROUP BY region
+) AS stage1;
+
+--	outer query do "calculation", inner query do "condition check"
+```
+CTE version:<br >
+```
+WITH stage1 AS (
+	SELECT
+		region,
+		SUM(CASE WHEN year=2022 THEN revenue END) AS revenue_2022,
+		SUM(CASE WHEN year=2023 THEN revneue END) AS revenue_2023
+	FROM sales
+	GROUPU BY region
+)
+SELECT
+	region,
+	revenue_2022,
+	revenue_2023,
+	(revenue_2023 - revenue_2022) / revenue_2022 AS growth_rate
+FROM stage1;
+```
+1. subquery execute order: inner first, then outer<br >
+2. SELECT __"create new column"__ from other columns:<br >
+	1. ex: (revenue_2023 - revenue_2022) / revenue_2022 AS growth_rate<br >
+	2. ex: SUM(CASE WHEN year=2022 THEN revenue END) AS revenue_2022<br >
+3. CASE syntax:<br >
+```
+SELECT
+	CASE
+		WHEN <condition1> THEN <current column value1 return>,
+		WHEN <condition2> THEN <current column value2 return>,
+		ELSE <exception value return>
+	END AS <new column value> 
+```
+4. Pivot pattern example:<br >
+```
+SELECT
+	SUM(CASE WHEN year=2022 THEN revenue) AS revenue_2022
+```
+After group same region, different cities' revenue in 2022 are sumed up for "certain region 2022 revenue"<br >
+This makes original "vertical long" table become "horizontal wide" table (called Pivot pattern)<br >
+Practical usage: generate YoY (year over year) report<br >
+
+5. Multiple CASE example:<br >
+```
+SELECT
+	CASE
+		WHEN salary >= 70000 THEN 'Executive',
+		WHEN salary >= 60000 THEN 'Senior',
+		WHEN salary >= 50000 THEN 'Mid-level',
+		ELSE 'Entry-level'
+	END AS career_tier
+
+--	create career tier column by salary
+```
+6. Avoid dividing by 0:<br >
+ex: `(revenue_2023 - revenue_2022) / revenue_2022`<br >
+use NULLIF:<br >
+syntax: NULLIF(\<expression1\>, \<expression2\>)<br >
+NULLIF return NULL if expression1 = expression2<br >
+NULLIF return expressioin1 if expression1 != expression2<br >
