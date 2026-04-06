@@ -940,3 +940,25 @@ OVER:<br >
 4. What is running total? running means "Cumulative",<br >
 As you move down current row, the window expand to include more rows (include current row) for calculation<br >
 e.g. accumulated customer number every year<br >
+## 77. SUM + OVER<br >
+```
+SELECT
+	join_year,
+	SUM(annual_new_customer) OVER (
+		ORDER BY join_year
+	) AS customer_so_far
+FROM (
+	SELECT
+		EXTRACT(YEAR FROM customer_since) AS join_year
+		COUNT(*) AS annual_new_customer
+	FROM dim_customers_walmart
+	GROUP BY EXTRACT(YEAR FROM customer_since)
+) AS stage1;
+
+--	inner first: get new customer for each year
+--	outer later: calculate cumulative customer number every year
+```
+In `SUM(annual_new_customer) OVER (ORDER BY join_year) AS customer_so_far`:<br >
+	1. The function: `SUM(annual_new_customer)`: how to calculate and what to calculate<br >
+	2. The window: `OVER`: tell SQL to use window function<br >
+	3. The rule: `ORDER BY join_year`: the cumulative function grow row-by-row based on time (join_year)<br >
