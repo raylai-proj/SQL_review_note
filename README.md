@@ -143,7 +143,7 @@ WHERE salary > 50000;
 --	FROM <table_name>
 --	WHERE <condition>;
 ```
-### 27. You can, but you don't have to include column in WHERE clause in SELECT list<br >
+## 27. You can, but you don't have to include column in WHERE clause in SELECT list<br >
 ```
 SELECT product_name, unit_price 
 FROM products 
