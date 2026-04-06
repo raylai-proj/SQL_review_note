@@ -1052,3 +1052,19 @@ use NULLIF:<br >
 syntax: NULLIF(\<expression1\>, \<expression2\>)<br >
 NULLIF return NULL if expression1 = expression2<br >
 NULLIF return expressioin1 if expression1 != expression2<br >
+## 80. CASE with different column condition<br >
+```
+SELECT
+	order_id,
+	order_amount,
+	status,
+	CASE
+		WHEN status = 'cancelled' THEN 'ignore',
+		WHEN order_amount > 5000 THEN 'high value'
+		WHEN order_date < '2025-01-01' THEN 'legacy'
+		ELSE 'normal'
+	END AS order_priority
+FROM orders;
+
+--	CASE 可以用不同 column 決定 data
+```
