@@ -912,3 +912,31 @@ GROUP BY month;
 
 --	show monthly_sales in orders for each month
 ```
+## 76. Window function OVER<br >
+```
+SELECT
+	year,
+	AVG(average_birth_year) OVER (ORDER BY year) AS cumulative_average_birth_year
+FROM (
+	SELECT
+		EXTRACT(YEAR FROM customer_since) AS year,
+		AVG(birth_year) AS average_birth_year
+	FROM dim_customers_walmart
+	GROUP BY EXTRACT(YEAR FROM customer_since)
+) AS stage1;
+```
+1. What is OVER?<br >
+Unlike aggregate function AVG, SUM, COUNT collapse rows into 1 row (Many to 1), OVER keeps Rows and add "running total"<br >
+OVER:<br >
+	1. turn aggregate function become Window function<br >
+	2. keep rows (Many to Many)<br >
+	3. calculate Cumulative result: every next row include result of previous row<br >
+2. OVER syntax: AVG(\<column\>) OVER (ORDER BY \<column\>) AS \<alias\> <br >
+3. What is Window function?
+	1. Window means the calculation compute each row based on "a set of rows" (like a window), instead of whole table<br >
+	So it doesn't like basic aggregation to collapse all rows to 1 result row<br >
+	it creates Many results to Many rows<br >
+
+4. What is running total? running means "Cumulative",<br >
+As you move down current row, the window expand to include more rows (include current row) for calculation<br >
+e.g. accumulated customer number every year<br >
