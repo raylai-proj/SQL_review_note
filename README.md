@@ -1091,7 +1091,7 @@ WHERE customer_id IN (
 2. aggregate function can be SELECT or HAVING to work with GROUP BY<br >
 	1. aggregate function in SELECT: __show__ the columns after GROUP BY<br >
 	2. aggregate function in HAVING: __filter__ the rows after GROUP BY<br >
-#   82. SHOW TABLES + LIKE<br >
+##   82. SHOW TABLES + LIKE<br >
 ```
 SHOW TABLES;	--	show all table names on SQL
 SHOW TABLES LIKE 'o%';	--	show all table names start with o on SQL
