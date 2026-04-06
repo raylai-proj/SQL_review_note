@@ -62,7 +62,7 @@ DROP TABLE Students;
 
 --	delete table and delete all data in that table
 ```
-## Add row: INSERT, change row: UPDATE, remove row: DELETE
+## 20-1 Add row: INSERT, change row: UPDATE, remove row: DELETE<br >
 ## 21. INSERT INTO \<table name\> VALUES<br >
 syntax:
 ```
