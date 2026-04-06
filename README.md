@@ -1119,3 +1119,15 @@ END AS order_status_2025
 ```
 pros: only compare 1 column value, write column after CASE only once<br >
 cons: can only use 1 column, and can only do check if value is the same, no >, < comparison<br >
+## 84. CASE create column<br >
+```
+SELECT
+	product_name,
+	CASE
+		WHEN unit_price > 500 THEN 'high_profit'
+		ELSE 'average_profit'
+	END AS profitibility
+FROM products;
+```
+CASE always happens in SELECT clause (but not immediately after SELECT)<br >
+CASE always creates a new column, e.g. `END AS profitibility`<br >
