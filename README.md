@@ -962,3 +962,17 @@ In `SUM(annual_new_customer) OVER (ORDER BY join_year) AS customer_so_far`:<br >
 	1. The function: `SUM(annual_new_customer)`: how to calculate and what to calculate<br >
 	2. The window: `OVER`: tell SQL to use window function<br >
 	3. The rule: `ORDER BY join_year`: the cumulative function grow row-by-row based on time (join_year)<br >
+## 78. GROUP BY, SELECT Alias conflict<br >
+```
+SELECT
+	EXTRACT(YEAR FROM customer_since) AS year,
+	--	year,
+	COUNT(customer_id) AS annual_customer
+FROM
+	dim_customers_walmart
+GROUP BY EXTRACT(YEAR FROM customer_since);
+--	GROUP BY EXTRACT(YEAR FROM customer_since) AS year;
+```
+Question: GROUP BY execute eariler than SELECT, why SELECT cannot use Alias (AS) created by GROUP BY?<br >
+Answer: the GROUP BY doesn't allow `AS`, only SELECT and FROM can use `AS`<br >
+Solution: repeat same expression in GROUP BY and SELECT
