@@ -1068,3 +1068,26 @@ FROM orders;
 
 --	CASE 可以用不同 column 決定 data
 ```
+## 81. GROUP BY + HAVING<br >
+```
+-- Retrieve the customer_name
+-- customers who have placed orders with a total amount
+-- greater than the average amount of all orders.
+
+SELECT customer_name
+FROM customers
+WHERE customer_id IN (
+	SELECT customer_id
+	FROM orders
+	GROUP BY customer_id
+	HAVING SUM(order_amount) > (
+		SELECT AVG(order_amount FROM orders)
+	)
+);
+```
+1. HAVING can directly use:<br >
+	1. aggregate function, e.g. COUNT(*), SUM(order_amount)<br >
+	2. subquery, e.g. (SELECT AVG(order_amount FROM orders))<br >
+2. aggregate function can be SELECT or HAVING to work with GROUP BY<br >
+	1. aggregate function in SELECT: __show__ the columns after GROUP BY<br >
+	2. aggregate function in HAVING: __filter__ the rows after GROUP BY<br >
