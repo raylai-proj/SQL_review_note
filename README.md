@@ -187,7 +187,7 @@ WHERE NOT country = 'USA';
 
 --	NOT <column_name> = <value>
 ```
-## 30.
+## 30. IN
 ```
 SELECT *
 FROM employees
