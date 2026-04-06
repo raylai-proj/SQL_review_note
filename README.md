@@ -1020,8 +1020,8 @@ FROM stage1;
 ```
 SELECT
 	CASE
-		WHEN <condition1> THEN <current column value1 return>,
-		WHEN <condition2> THEN <current column value2 return>,
+		WHEN <condition1> THEN <current column value1 return>
+		WHEN <condition2> THEN <current column value2 return>
 		ELSE <exception value return>
 	END AS <new column value> 
 ```
@@ -1038,9 +1038,9 @@ Practical usage: generate YoY (year over year) report<br >
 ```
 SELECT
 	CASE
-		WHEN salary >= 70000 THEN 'Executive',
-		WHEN salary >= 60000 THEN 'Senior',
-		WHEN salary >= 50000 THEN 'Mid-level',
+		WHEN salary >= 70000 THEN 'Executive'
+		WHEN salary >= 60000 THEN 'Senior'
+		WHEN salary >= 50000 THEN 'Mid-level'
 		ELSE 'Entry-level'
 	END AS career_tier
 
