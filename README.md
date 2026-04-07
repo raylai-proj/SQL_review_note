@@ -1348,3 +1348,18 @@ FROM invoices;
 2. Can use more than 1 UNION to combine > 2 SELECTs<br >
 3. When column names are different in each SELECT, UNION takes first SELECT column names as column names<br >
 4. UNION's keyword: "<ins>consolidate</ins>", e.g. create a consolidated list of transactions<br >
+## 94. JOIN + BETWEEN<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	o.order_date,
+	o.order_amount
+FROM customers c
+JOIN orders o
+	USING(customer_id)
+WHERE o.order_date BETWEEN '2023-01-01' AND '2023-06-30';
+
+-- WHERE filter date range after JOIN
+```
