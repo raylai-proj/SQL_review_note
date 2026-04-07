@@ -1289,3 +1289,44 @@ INNTER JOIN inventory i
 	5. When will FULL JOIN have min rows?<br >
 		FULL JOIN will have min rows when only having 1-to-1 match<br >
 		`min rows = max(n+i, m+j)` where n and m have to <= 1 to make both n+i and m+j are 1-to-1<br >
+## 93. FULL JOIN in MySQL<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	o.order_date
+FROM customers c
+LEFT JOIN orders o
+	USING(customer_id)
+UNION
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	o.order_date
+FROM customers c
+RIGHT JOIN orders o
+	USING(customer_id);
+```
+1. MySQL doesn't have FULL JOIN, so has to use LEFT JOIN, UNION, and RIGHT JOIN to create FULL JOIN<br >
+	LEFT JOIN and RIGHT JOIN will duplicate at matched part, and UNION will perform DISTINCT, so the duplicated part only appear once<br >
+2. UNION: UNION combine two tables "<ins>Vertically</ins>" and do DISTINCT to keep duplicated rows appear only once<br >
+3. JOINs combine tables "<ins>Horizontally</ins>" (expand <ins>columns</ins>),<br >
+	UNION combine tables "<ins>Vertically</ins>" (expand <ins>rows</ins>)<br >
+4. UNION syntax:<br >
+```
+SELECT column1 FROM table1
+UNION
+SELECT column2 FROM table2;
+```
+5. UNION rules:<br >
+	1. two tables must have same number of Columns.<br >
+	2. Columns must have "Compatible Data Types in the Same order"<br >
+		- common compatible data type:<br >
+			1. numeric: INT, BIGINT, DECIMAL, FLOAT<br >
+			2. string: CHAR, VARCHAR, TEXT<br >
+			3. temporal: DATE, DATETIME, TIMESTAMP<br >
+6. UNION vs. UNION ALL: <br >
+	1. UNION do DISTINCT: keep duplicated rows appear only once,<br >
+	2. UNION ALL stack 2 tables: duplicated rows show twice<br >
