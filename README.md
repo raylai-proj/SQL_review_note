@@ -1169,7 +1169,7 @@ FROM <table1> AS <alias1>
 	- All JOIN add table2 columns to table1 columns, and do SELECT in the end.<br >
 	- e.g. table customers has 3 columns, and table orders has 4 columns<br >
 	The JOIN outputs table with 7 columns (2 customer_id columns: customers.customer_id, orders.customer_id)<br >
-## 87. Multiple JOINs<br >
+## 87. JOIN multiple tables<br >
 ```
 SELECT
 	c.customer_id,
