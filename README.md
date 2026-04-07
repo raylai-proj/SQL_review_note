@@ -1330,3 +1330,21 @@ SELECT column2 FROM table2;
 6. UNION vs. UNION ALL: <br >
 	1. UNION do DISTINCT: keep duplicated rows appear only once,<br >
 	2. UNION ALL stack 2 tables: duplicated rows show twice<br >
+## 93-1. UNION<br >
+```
+SELECT
+	customer_id,
+	order_date AS transaction_date,
+	order_amount AS transaction_amount
+FROM orders 
+UNION
+SELECT
+	customer_id,
+	invoice_date AS transaction_date,
+	total_amount AS transaction_amount
+FROM invoices;
+```
+1. If want to show duplicated customer_id without DISTINCT: UNION ALL<br >
+2. Can use more than 1 UNION to combine > 2 SELECTs<br >
+3. When column names are different in each SELECT, UNION takes first SELECT column names as column names<br >
+4. UNION's keyword: "<ins>consolidate</ins>", e.g. create a consolidated list of transactions<br >
