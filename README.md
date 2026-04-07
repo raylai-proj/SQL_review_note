@@ -1188,4 +1188,35 @@ LEFT JOIN orders_cat AS oc
 3. multiple JOINs can also use CTEs<br >
 	e.g. <ins>A</ins> LEFT JOIN <ins>B</ins> LEFT JOIN <ins>C</ins> LEFT JOIN <ins>D</ins><br >
 	=> CTE1 = <ins>A</ins> LEFT JOIN <ins>B</ins>, CTE2 = CTE1 LEFT JOIN <ins>C</ins>, CTE3 = CTE2 LEFT JOIN <ins>D</ins><br >
-	
+## 88. LEFT JOIN vs. INNER JOIN vs. RIGHT JOIN<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	COUNT(o.order_id) AS order_count,
+	SUM(o.order_amount) AS total_amount
+FROM orders o
+LEFT JOIN customers c
+	ON o.customer_id = c.customer_id
+GROUP BY c.customer_id, c.customer_name;
+```
+1. how to know when to use LEFT JOIN, or INNER JOIN?<br >
+	Ask: for customers don't have orders, should I output them?<br >
+	Output them: LEFT JOIN, not output them: INNER JOIN<br >
+2. always use LEFT JOIN, because human read code from left to right<br >
+	If need RIGHT JOIN, just swap order of tables and use LEFT JOIN<br >
+3. Difference between <ins>first COUNT(), SUM() in subquery, then LEFT JOIN</ins> vs. <ins>first LEFT JOIN, then COUNT(), SUM()</ins>:<br >
+	1. COUNT() return <ins>0</ins> if NULL<br >
+	2. SUM(), AVG(), MIN(), MAX() return <ins>NULL</ins> if NULL<br >
+	3. LEFT JOIN return <ins>NULL</ins> if mismatch<br >
+	- <ins>first COUNT(), SUM() in subquery, then LEFT JOIN</ins> mismatch:<br >
+		First 0, NULL, then both NULL => output NULL, NULL<br >
+	- <ins>first LEFT JOIN, then COUNT(), SUM()</ins> mismatch:<br >
+		First both NULL, then 0, NULL => output 0, NULL<br >
+4. always add COALESCE(SUM(order_amount), 0) to make sure be 0<br >
+	- COALESCE syntax: COALESCE(\<expression1\>, \<expression2\>)<br >
+	- return expression1 if expression1 != NULL<br >
+	- return expression2 if expression1 = NULL<br >
+	- COALESCE is scalar function, not aggregate function<br >
+5. NULLIF() turn 0 to NULL, COALESCE() turn NULL to 0<br >
+6. GROUP BY group multiple columns separated by ","<br >
