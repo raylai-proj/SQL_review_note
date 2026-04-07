@@ -1131,3 +1131,16 @@ FROM products;
 ```
 CASE always happens in SELECT clause (but not immediately after SELECT)<br >
 CASE always creates a new column, e.g. `END AS profitibility`<br >
+## 85. Always add ELSE in CASE<br >
+```
+SELECT
+	*,
+	CASE
+		WHEN DATE_FORMAT(order_date, '%Y-%m') < '2023-05' THEN 'outdated
+		WHEN order_status = 'Completed' THEN 'in drop quere'
+		ELSE 'processing'
+	END AS order_status_2025
+FROM orders;
+
+--	always add ELSE in CASE, otherwise, rows not matching WHEN will be set NULL (empty)
+```
