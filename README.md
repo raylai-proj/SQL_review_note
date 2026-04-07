@@ -1271,3 +1271,21 @@ INNTER JOIN inventory i
 	USING(store_id, product_id);
 ```
 <ins>USING</ins> use "," to JOIN multiple columns<br >
+## 92. FULL JOIN<br >
+1. FULL JOIN = OR in logic (left + right - inner join (left, right))<br >
+2. What does FULL JOIN do?<br >
+	1. FULL JOIN adds all rows from both tables.<br >
+	2. If there is a match on column(s), they are in the same row.<br >
+	3. If no matches, they become 2 rows with NULLs on each side.<br > 
+3. To prevent many to many explosion, we have to use <ins>GROUP BY</ins> before FULL JOIN<br >
+4. How many rows created:<br >
+	- ex: usecase:<br >
+		1. left table = n + i, right table = j + m<br >
+		2. n, m are many-to-many, i, j are 1-to-1:<br >
+	1. For INNER JOIN, rows: 0 ~ n*m + min(i, j)<br >
+	2. For LEFT JOIN, rows: n + i ~ n*m + i<br >
+	3. For FULL JOIN, rows: max(n + i, m + j) ~ n*m + i + j<br >
+	4. When FULL JOIN without match: rows = n + m + i + j<br >
+	5. When will FULL JOIN have min rows?<br >
+		FULL JOIN will have min rows when only having 1-to-1 match<br >
+		`min rows = max(n+i, m+j)` where n and m have to <= 1 to make both n+i and m+j are 1-to-1<br >
