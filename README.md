@@ -1263,3 +1263,11 @@ INNER JOIN inventory i
 	AND s.product_id = i.product_id;
 ```
 We use <ins>AND</ins> to JOIN multiple columns<br >
+## 91. JOIN USING multiple columns<br >
+```
+SELECT *
+FROM sales s
+INNTER JOIN inventory i
+	USING(store_id, product_id);
+```
+<ins>USING</ins> use "," to JOIN multiple columns<br >
