@@ -1220,3 +1220,34 @@ GROUP BY c.customer_id, c.customer_name;
 	- COALESCE is scalar function, not aggregate function<br >
 5. NULLIF() turn 0 to NULL, COALESCE() turn NULL to 0<br >
 6. GROUP BY group multiple columns separated by ","<br >
+## 89. INNER JOIN + USING<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	o.order_date,
+	o.order_amount
+FROM customers c
+INNER JOIN orders o
+	USING(customer_id);
+
+--	ON <condition>, no parenthesis
+--	USING(<column>), has parenthesis
+```
+1. INNER JOIN can create rows as n x m (Cartesian Porduct) (INNER JOIN not always create min(n, m) rows)<br >
+	ex: INNER JOIN 1-to-1 => create 0 ~ min(n, m) rows, many-to-many => create 0 ~ n x m rows<br >
+2. USING syntax: USING(\<column_name\>)<br >
+	1. USING is a shorthand of ON, you can only use it when the column names you are joining to are "<ins>Exactly Same</ins>" in both tables.<br >
+	2. USING:<br >
+		1. simplify JOIN logic (only look for the same column name).<br >
+		2. merge 2 columns into 1 column<br >
+3. Why USING won't confuse SQL which table's column it refer?<br >
+	<ins>USING</ins> produces only 1 combined column as output, while <ins>ON</ins> keeps 2 separate columns as output,<br >
+	so USING WON'T confuse SQL which column it refers.<br >
+4. Shorthand:<br >
+	1. JOIN: shorthand of INNER JOIN<br >
+	2. LEFT JOIN: shorthand of LEFT OUTER JOIN<br >
+	3. RIGHT JOIN: shorthand of RIGHT OUTER JOIN<br >
+	4. FULL JOIN: shorthand of FULL OUTER JOIN<br >
+	5. CROSS JOIN: Cartesian Product<br >
