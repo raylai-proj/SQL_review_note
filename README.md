@@ -1169,3 +1169,23 @@ FROM <table1> AS <alias1>
 	- All JOIN add table2 columns to table1 columns, and do SELECT in the end.<br >
 	- e.g. table customers has 3 columns, and table orders has 4 columns<br >
 	The JOIN outputs table with 7 columns (2 customer_id columns: customers.customer_id, orders.customer_id)<br >
+## 87. Multiple JOINs<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	oc.status
+FROM customers AS c
+LEFT JOIN orders AS o
+	ON c.customer_id = o.customer_id
+LEFT JOIN orders_cat AS oc
+	ON o.order_id = oc.order_id;
+```
+1. There can be many JOINs in a query, the execute order is:<br >
+	FROM table1 JOIN table2, then result table JOIN table3<br >
+2. Indentation format: JOIN align with FROM, then ON indented<br >
+3. multiple JOINs can also use CTEs<br >
+	e.g. <ins>A</ins> LEFT JOIN <ins>B</ins> LEFT JOIN <ins>C</ins> LEFT JOIN <ins>D</ins><br >
+	=> CTE1 = <ins>A</ins> LEFT JOIN <ins>B</ins>, CTE2 = CTE1 LEFT JOIN <ins>C</ins>, CTE3 = CTE2 LEFT JOIN <ins>D</ins><br >
+	
