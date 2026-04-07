@@ -1251,3 +1251,15 @@ INNER JOIN orders o
 	3. RIGHT JOIN: shorthand of RIGHT OUTER JOIN<br >
 	4. FULL JOIN: shorthand of FULL OUTER JOIN<br >
 	5. CROSS JOIN: Cartesian Product<br >
+## 90. JOIN ON multiple columns<br >
+```
+SELECT
+	s.store_id,
+	s.product_id,
+	i.stock_level
+FROM sales s
+INNER JOIN inventory i
+	ON s.store_id = i.store_id
+	AND s.product_id = i.product_id;
+```
+We use <ins>AND</ins> to JOIN multiple columns<br >
