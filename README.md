@@ -1144,3 +1144,28 @@ FROM orders;
 
 --	always add ELSE in CASE, otherwise, rows not matching WHEN will be set NULL (empty)
 ```
+## 86. LEFT JOIN & JOIN<br >
+```
+SELECT
+	c.customer_id,
+	o.order_id,
+	o.order_date
+FROM customers AS c
+LEFT JOIN orders AS o
+	ON c.customer_id = o.customer_id;
+```
+1. JOIN syntax:<br >
+```
+FROM <table1> AS <alias1>
+[JOIN TYPE] <table2> AS <alias2>
+	ON <condition>
+```
+2. SQL clause order: SELECT, FROM, "<ins>JOIN</ins>", "<ins>ON</ins>", WHERE, GROUP BY, HAVING, ORDER BY, LIMIT, OFFSET<br >
+3. SQL execute order: FROM, "<ins>JOIN</ins>", "<ins>ON</ins>", WHER, GROUP BY, HAVING, "<ins>SELECT</ins>", ORDER BY, LIMIT, OFFSET<br >
+4. How "<ins>LEFT JOIN</ins>" expand "<ins>rows</ins>"?<br >
+	- LEFT JOIN expand rows when table1 \<-\> table2 is __one-to-many__<br >
+	- e.g. 1 customer_id in customers table matches 2 customer_id's orders in orders table<br >
+5. How "<ins>All JOIN</ins>" expand "<ins>columns</ins>"?<br >
+	- All JOIN add table2 columns to table1 columns, and do SELECT in the end.<br >
+	- e.g. table customers has 3 columns, and table orders has 4 columns<br >
+	The JOIN outputs table with 7 columns (2 customer_id columns: customers.customer_id, orders.customer_id)<br >
