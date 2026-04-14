@@ -1416,3 +1416,24 @@ FROM employees;
 2. Use DISTINCT in aggregate function in SELECT. If DISTINCT not in aggregate function, it can be replaced by GROUP BY.<br >
 3. DISTINCT always after SELECT if it's not in aggregate function.<br >
 4. DISTINCT immediately after SELECT will see all-column-in-SELECCT as a combination and filter them to output only unique combination.<br >
+## 98. USING same column name<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	c.address,
+	o.order_id,
+	o.order_date,
+	o.order_amount,
+	o.shipping_address
+FROM customers c
+JOIN orders o
+	ON c.customer_id = o.customer_id
+	AND c.address = o.shipping_address;
+```
+If column names are exactly the same, can use USING, e.g.<br >
+```
+ON c.customer_id = o.customer_id
+AND c.address = o.address
+=> USING(customer_id, address)
+```
