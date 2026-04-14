@@ -1451,3 +1451,25 @@ JOIN employees ms
 	ON m.manager_id = ms.employee_id;
 ```
 Self JOIN to show hierarchy of employees (show employees' managers and senior managers).<br >
+## 100. CONCAT()<br >
+```
+SELECT
+	e1.employee_id AS employee1_id,
+	CONCAT(e1.first_name, ' ', e1.last_name) AS employee1_name,
+	e2.employee_id AS employee2_id,
+	CONCAT(e2.first_name, ' ', e2.last_name) AS employee2_name,
+	e1.manager_id
+FROM employees e1
+JOIN employees e2
+	ON e1.manager_id = e2.manager_id
+	AND e1.employee_id < e2.employee_id;
+
+--	show employee pair with same manager
+```
+1. syntax: CONCAT(\<'string1'\>, \<column1\>, \<function1('string1')\>) AS new_column_name<br >
+2. usage: CONCAT(column1, ' ', column2) AS new_column_name<br >
+3. CONCAT combine <ins>2 column values</ins> into one (horizontally), while UNION combine <ins>2 tables</ins> into one (vertically).<br >
+4. CONCAT can combine 1. pure string, 2. string in column, 3. output string from function.<br >
+5. To avoid repeating 1. identity case (employee_id=1, employee_id=1), 2. symmetric pair (employee_id=1, employee_id=2), (employee_id=2, employee_id=1):<br >
+	use <ins>smaller than</ins> comparison `AND e1.employee_id < e2.employee_id`<br >
+6. If manager_id is NULL, JOIN see NULL as UNKNOWN, and see UNKNOWN as False, so it won't show up.<br >
