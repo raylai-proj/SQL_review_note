@@ -1437,3 +1437,17 @@ ON c.customer_id = o.customer_id
 AND c.address = o.address
 => USING(customer_id, address)
 ```
+## 99. Self JOIN<br >
+```
+SELECT
+	e.employee_id,
+	e.first_name,
+	m.first_name AS manager_name,
+	ms.first_name AS senior_manager
+FROM employees e
+JOIN employees m
+	ON e.manager_id = m.employee_id
+JOIN employees ms
+	ON m.manager_id = ms.employee_id;
+```
+Self JOIN to show hierarchy of employees (show employees' managers and senior managers).<br >
