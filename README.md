@@ -1363,3 +1363,29 @@ WHERE o.order_date BETWEEN '2023-01-01' AND '2023-06-30';
 
 -- WHERE filter date range after JOIN
 ```
+## 95. Filter in JOIN vs. Filter in WHERE<br >
+```
+SELECT
+	c.customer_name,
+	o.order_date
+FROM customers c
+JOIN orders o
+	ON c.customer_id = o.customer_id
+	AND o.order_amount > 1000;
+```
+vs.<br >
+```
+SELECT
+	c.customer_name,
+	o.order_date
+FROM customers c
+JOIN orders o
+	USING(customer_id)
+WHERE o.order_amount > 1000;
+```
+1. `USING` only accpet column name, so cannot do AND or other things after it.<br >
+2. If it's INNER JOIN, no difference between them.<br >
+3. If it's LEFT JOIN,
+	1. 1st one will keep all customer rows and let orders' columns NULL if order_amount <= 1000.<br >
+	2. 2nd one rows with order_amount <= 1000.<br >
+4. The speed of two are the same. The 2nd one use more memory because the joined table is larger.<br >
