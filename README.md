@@ -1407,3 +1407,12 @@ JOIN orders o
 --	but only for orders with a total amount at least 500
 ```
 `ON` is a logical clause and can do filtering using `AND`, `OR`.<br >
+## 97. DISTINCT in COUNT<br >
+```
+SELECT COUNT(DISTINCT department) AS total_department
+FROM employees;
+```
+1. DISTINCT in COUNT() is a common use case to find number of unique columns.<br >
+2. Use DISTINCT in aggregate function in SELECT. If DISTINCT not in aggregate function, it can be replaced by GROUP BY.<br >
+3. DISTINCT always after SELECT if it's not in aggregate function.<br >
+4. DISTINCT immediately after SELECT will see all-column-in-SELECCT as a combination and filter them to output only unique combination.<br >
