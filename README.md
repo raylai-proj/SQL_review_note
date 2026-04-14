@@ -1389,7 +1389,7 @@ WHERE o.order_amount > 1000;
 	1. 1st one will keep all customer rows and let orders' columns NULL if order_amount <= 1000.<br >
 	2. 2nd one rows with order_amount <= 1000.<br >
 4. The speed of two are the same. The 2nd one use more memory because the joined table is larger.<br >
-## ON with filter<br >
+## 96. ON with filter<br >
 ```
 SELECT
 	c.customer_id,
