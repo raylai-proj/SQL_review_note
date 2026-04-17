@@ -1510,7 +1510,7 @@ ADD COLUMN create_at TIMESTAMP DEFAULT NOW();
 --	column data type is TIMESTAMP
 --	column default value is NOW()
 ```
-## 103 INTERVAL<br >
+## 103. INTERVAL<br >
 ```
 SELECT *
 FROM orders
