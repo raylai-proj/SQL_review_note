@@ -1510,3 +1510,17 @@ ADD COLUMN create_at TIMESTAMP DEFAULT NOW();
 --	column data type is TIMESTAMP
 --	column default value is NOW()
 ```
+## 103 INTERVAL<br >
+```
+SELECT *
+FROM orders
+WHERE order_date >= CURDATE() - INTERVAL 30 HOUR - INTERVAL 30 MINUTE;
+```
+1. syntax: INTERVAL \<quantity\> \<unit\><br >
+	\<quantity\>: + or - number, e.g. 30, -7<br >
+	\<unit\>: YEAR, MONTH, DAY, WEEK, HOUR, MINUTE<<br >
+2. INTERVAL can be in SELECT, WHERE, ON<br >
+3. Day + 1 day:<br >
+	MySQL: `create_at + INTERVAL 1 DAY;`<br >
+	PostgreSQL: `create_at + INTERVAL '1 DAY'`<br >
+	SQL server: `DATEADD(DAY, 1, create_at)`<br >
