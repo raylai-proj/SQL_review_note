@@ -1544,3 +1544,19 @@ WHERE status = 'Completed'
 	AND order_date = CURDATE();
 ```
 Use `INSERT INTO` to add rows from <ins>table: staging_orders</ins> to <ins>table: factsales</ins> by `SELECT`<br > 
+## 105. DATEDIFF()<br >
+```
+SELECT
+	order_id,
+	order_date,
+	shipped_date,
+	DATEDIFF(shipped_date, order_date) AS days_to_ship
+FROM orders
+WHERE DATEDIFF(shipped_date, order_date) > 3;
+
+--	find out how many days take to ship after placing orders
+--	find shipping takes over 3 days for slow shipment
+```
+- syntax: `DATEDIFF(<end_date>, <start_date>)`, e.g. `DATEDIFF('2026-03-08', '2026-03-01')`<br >
+	=> end_date - start_date = '2026-03-08' - '2026-03-01' = 7<br >
+		
