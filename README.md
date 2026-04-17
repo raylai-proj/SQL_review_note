@@ -1524,3 +1524,23 @@ WHERE order_date >= CURDATE() - INTERVAL 30 HOUR - INTERVAL 30 MINUTE;
 	MySQL: `create_at + INTERVAL 1 DAY;`<br >
 	PostgreSQL: `create_at + INTERVAL '1 DAY'`<br >
 	SQL server: `DATEADD(DAY, 1, create_at)`<br >
+## 104. INSERT INTO + SELECT<br >
+```
+INSERT INTO factsales (
+	order_id,
+	customer_id,
+	gross_amount,
+	tax_amount,
+	processed_at
+)
+SELECT
+	order_id,
+	customer_id,
+	total_price,
+	total_price * 0.05,
+	NOW(),
+FROM staging_orders
+WHERE status = 'Completed'
+	AND order_date = CURDATE();
+```
+Use `INSERT INTO` to add rows from <ins>table: staging_orders</ins> to <ins>table: factsales</ins> by `SELECT`<br > 
