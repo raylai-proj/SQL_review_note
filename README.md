@@ -1501,3 +1501,12 @@ SELECT CURRENT_TIMESTAMP AS current_datetime;
 --	in SQL server:
 SELECT GETDATE() AS current_datetime;
 ```
+## 102. DEFAULT NOW()<br >
+```
+ALTER TABLES employees
+ADD COLUMN create_at TIMESTAMP DEFAULT NOW();
+
+--	add create_at column to log when when was a column born
+--	column data type is TIMESTAMP
+--	column default value is NOW()
+```
