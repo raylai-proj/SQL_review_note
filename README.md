@@ -1473,3 +1473,31 @@ JOIN employees e2
 5. To avoid repeating 1. identity case (employee_id=1, employee_id=1), 2. symmetric pair (employee_id=1, employee_id=2), (employee_id=2, employee_id=1):<br >
 	use <ins>smaller than</ins> comparison `AND e1.employee_id < e2.employee_id`<br >
 6. If manager_id is NULL, JOIN see NULL as UNKNOWN, and see UNKNOWN as False, so it won't show up.<br >
+## 101. CURDATE() vs. CURTIME() vs. NOW()<br >
+CURDATE(): Year-Month-Date<br >
+```
+--	in MySQL:
+SELECT CURDATE() AS current_date;
+--	in PostgreSQL:
+SELECT CURRENT_DATE AS current_date;
+--	in SQL server:
+SELECT CAST(GETDATE() AS DATE) AS current_date;
+```
+CURTIME():	Hour:Minute:Second<br >
+```
+--	in MySQL:
+SELECT CURTIME() AS current_time;
+--	in PostgreSQL:
+SELECT CURRENT_TIME AS current_time;
+--	in SQL server:
+SELECT CAST(GETDATE() AS TIME) AS current_time;
+```
+Date+Time:	Year-Month-Date Hour:Minute:Second<br >
+```
+--	in MySQL:
+SELECT NOW() AS current_datetime;
+--	in PostgreSQL:
+SELECT CURRENT_TIMESTAMP AS current_datetime;
+--	in SQL server:
+SELECT GETDATE() AS current_datetime;
+```
