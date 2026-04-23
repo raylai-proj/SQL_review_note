@@ -1573,3 +1573,24 @@ WHERE job_name = 'Daily_Sales_Sync';
 ```
 - syntax: `TIMEDIFF(<end_time>, <start_time>)`, e.g. `TIMEDIFF('14:30:05', '14:00:00')`<br >
 	=> end_time - start_time = '14:30:05' - '14:00:00' = '00:30:05'<br >
+## 107. TIMESTAMPDIFF()<br >
+```
+SELECT
+	u.user_id,
+	TIMESTAMPDIFF(u.signup_time, a.first_action_time) AS hours_to_action
+FROM users u
+JOIN user_actions a
+	USING(user_id)
+WHERE TIMESTAMPDIFF(HOUR, u.signup_time, a.first_action_time) <= 24;
+
+--	Product Manager wants to find if user performed an action after signning up in 24 hours
+```
+1. syntax `TIMESTAMPDIFF(unit, start, end)`, e.g. `TIMESTAMPDIFF(HOUR, u.signup_time, a.first_action_time)`<br >
+	=> end - start = a.first_action_time - u.signup_time<br >
+2. TIMESTAMPDIFF unit: FRAC_SECOND, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, QUARTER, YEAR<br >
+	FRAC_SECOND is microsecond = $$10^{-6}$$ seconds = one millionth<br >
+3. TIMESTAMPDIFF do Floor 無條件捨去法<br >
+4. Return type:
+	1. DATEDIFF return INTEGER<br >
+	2. TIMEDIFF return STRING<br >
+	3. TIMESTAMPDIFF return INTEGER<br >
