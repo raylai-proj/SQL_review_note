@@ -1594,3 +1594,20 @@ WHERE TIMESTAMPDIFF(HOUR, u.signup_time, a.first_action_time) <= 24;
 	1. DATEDIFF return INTEGER<br >
 	2. TIMEDIFF return STRING<br >
 	3. TIMESTAMPDIFF return INTEGER<br >
+## 108. INTERVAL<br >
+```
+SELECT
+	o.order_id,
+	o.order_status,
+	o.order_amount,
+	o.order_date,
+	o.order_date + INTERVAL 7 DAY AS expected_delivery_date,
+	o.order_date - INTERVAL 3 DAY AS last_cancellation_date,
+	c.customer_id,
+	c.customer_name
+FROM orders o
+JOIN customers c
+	ON o.customer_id = c.customer_id;
+```
+- syntax: `<column> +/- INTERVAL <number> <unit>`, e.g. o.order_date + INTERVAL 7 DAY AS expected_delivery_date<br >
+- make sure `<column>` type match `<unit>` type<br > 
