@@ -1617,3 +1617,23 @@ JOIN customers c
 3. DATE_ADD(), DATE_SUB() can be replaced by INTERVAL<br >
 	-`DATE_ADD(NOW(), INTERVAL 20 DAY) AS deadline` => `NOW() + INTERVAL 20 DAY AS deadline`<br >
 	-`DATE_SUB(NOW(), INTERVAL 3 DAY) AS last_cancel_date` => `NOW() - INTERVAL 3 DAY AS last_cancel_date`<br >
+## 110. DATE_FORMAT<br >
+```
+SELECT
+	c.customer_name,
+	DATE_FORMAT(o.order_date, '%d/%m/%Y') AS order_date,
+	DATE_FORMAT(o.order_date, '%W') AS weekday
+FROM customers c
+JOIN orders o
+	USING(customer_id);
+```
+1. DATE_FORMAT for formatting date<br >
+2. DATE_FORMAT: <br >
+	1. Year: 		%Y: 2026, 		%y: 26<br >
+	2. Month: 		%M: February, 	%m: 02, 	%b: Feb<br >
+	3. Day: 		%D: 3rd, 		%d: 03, 	%e: 3<br >
+	4. Weekday: 	%W: Sunday, 	%a: Sun<br >
+	5. Hour(24/12): %H: 13, 		%h: 1<br >
+	6. Minute: 		%i: 58<br >
+	7. Second: 		%s: 58<br >
+	8. AM/PM: 		%p: AM<br >
