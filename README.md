@@ -1559,4 +1559,17 @@ WHERE DATEDIFF(shipped_date, order_date) > 3;
 ```
 - syntax: `DATEDIFF(<end_date>, <start_date>)`, e.g. `DATEDIFF('2026-03-08', '2026-03-01')`<br >
 	=> end_date - start_date = '2026-03-08' - '2026-03-01' = 7<br >
-		
+## 106. TIMEDIFF()<br >
+```
+SELECT
+	job_name,
+	start_time,
+	end_time,
+	TIMEDIFF(end_time, start_time) AS duration
+FROM job_logs
+WHERE job_name = 'Daily_Sales_Sync';
+
+--	find out what's the latency of Daily_Sales_Sync
+```
+- syntax: `TIMEDIFF(<end_time>, <start_time>)`, e.g. `TIMEDIFF('14:30:05', '14:00:00')`<br >
+	=> end_time - start_time = '14:30:05' - '14:00:00' = '00:30:05'<br >
