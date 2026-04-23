@@ -1611,3 +1611,9 @@ JOIN customers c
 ```
 - syntax: `<column> +/- INTERVAL <number> <unit>`, e.g. o.order_date + INTERVAL 7 DAY AS expected_delivery_date<br >
 - make sure `<column>` type match `<unit>` type<br > 
+## 109. DATE_ADD(), DATE_SUB()<br >
+1. `DATE_ADD()` syntax: `DATE_ADD(<column>, INTERVAL <number> <unit>)`, e.g. `DATE_ADD(o.order_date, INTERVAL 7 DAY) AS expected_delivery_date`<br >
+2. `DATE_SUB()` syntax: `DATE_SUB(<column>, INTERVAL <number> <unit>)`, e.g. `DATE_SUB(o.order_date, INTERVAL 3 DAY) AS last_cancellation_date`<br >
+3. DATE_ADD(), DATE_SUB() can be replaced by INTERVAL<br >
+	-`DATE_ADD(NOW(), INTERVAL 20 DAY) AS deadline` => `NOW() + INTERVAL 20 DAY AS deadline`<br >
+	-`DATE_SUB(NOW(), INTERVAL 3 DAY) AS last_cancel_date` => `NOW() - INTERVAL 3 DAY AS last_cancel_date`<br >
