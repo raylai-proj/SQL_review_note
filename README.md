@@ -1711,3 +1711,18 @@ WHERE order_status = 'Completed';
 6. `TRY_CAST()` is function for BigQuery, Snowflake, Azure SQL Database, SQL Server, not for MySQL<br >
 ## 115. DESCRIBE<br >
 How to check data type of columns: `DESCRIBE <table_name>`<br >
+## 116. LENGTH, LEFT, RIGHT<br >
+```
+SELECT
+	CASE
+		WHEN LENGTH(COALESCE(user_name, '')) > 4 THEN CONCAT(LEFT(COALESCE(user_name, ''), 4), '...'),
+		ELSE COALESCE(user_name, '')
+		END AS adjusted_username
+FROM users;
+```
+1. syntax: `LENGTH(<column>)` output string length, e.g.`LENGTH('test')`, `LENGTH(c.customer_name)`<br >
+2. use CONCAT() to join/connect strings<br >
+3. syntax: `LEFT(<string>, number)`: return number of letters in string from left<br >
+4. syntax: `RIGHT(<string>, number)`: return number of letters in string from right<br >
+5. COALSECE in CONCAT to make sure if cancel the CASE and direct CONCAT user_name won't correpted<br >
+6. LEGNTH can be in SELECT, WHERE, JOIN ON, GROUP BY, ORDER BY<br >
