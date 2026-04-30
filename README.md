@@ -1681,3 +1681,14 @@ FROM customers;
 1. `CONCAT()` connects multiple <ins>columns (horizontal)</ins>, combine pure string, output string from function<br >
 2. `UNION()` conncects multiple <ins>rows (vertical)</ins><br >
 3. MySQL, PostgreSQL ignore NULL in `CONCAT()`, e.g. CONCAT('hi', NULL) => 'hi'<br >
+## 113. CONCAT_WS()<br >
+```
+SELECT
+	customer_id,
+	CONCAT_WS(', ', customer_name, address, city)
+FROM customers;
+```
+1. `CONCAT_WS()` = CONCAT with separator<br >
+2. syntax: `CONCAT_WS(<separator>, <column1>, <column2>,...)`<br >
+	-e.g. `CONCAT_WS(', ', address, city)` = 'address, city'<br >
+3. CONCAT_WS will skip NULL and won't add additional separator<br >
