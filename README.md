@@ -1709,3 +1709,5 @@ WHERE order_status = 'Completed';
 	V.S. `EXTRACT(YEAR FROM order_date)` output 'YYYY', other ex: MONTH, DAY, HOUR, MINUTE, SECOND<br >
 5. MySQL doesn't allow `CAST(<column> AS VARCHAR)` and `CAST(<column> AS STRING)`<br >
 6. `TRY_CAST()` is function for BigQuery, Snowflake, Azure SQL Database, SQL Server, not for MySQL<br >
+## 115. DESCRIBE<br >
+How to check data type of columns: `DESCRIBE <table_name>`<br >
