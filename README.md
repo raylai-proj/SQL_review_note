@@ -1670,7 +1670,7 @@ JOIN orders o
 ### Binary data type:<br >
 `BLOB` (binary large object): store unstructure data that doesn't fit in table:<br >
 	e.g. image: JPG, PNG, GIF, audio: MP3, document: PDF, compiled data: python, java binary code<br >
-## 112. CONCAT<br >
+## 112. CONCAT()<br >
 ```
 SELECT
 	customer_name,
