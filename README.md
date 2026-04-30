@@ -1670,3 +1670,14 @@ JOIN orders o
 ### Binary data type:<br >
 `BLOB` (binary large object): store unstructure data that doesn't fit in table:<br >
 	e.g. image: JPG, PNG, GIF, audio: MP3, document: PDF, compiled data: python, java binary code<br >
+## 112. CONCAT<br >
+```
+SELECT
+	customer_name,
+	customer_id,
+	CONCAT(address, ', ', city) AS full_address
+FROM customers; 
+```
+1. `CONCAT()` connects multiple <ins>columns (horizontal)</ins>, combine pure string, output string from function<br >
+2. `UNION()` conncects multiple <ins>rows (vertical)</ins><br >
+3. MySQL, PostgreSQL ignore NULL in `CONCAT()`, e.g. CONCAT('hi', NULL) => 'hi'<br >
