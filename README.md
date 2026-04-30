@@ -1692,3 +1692,20 @@ FROM customers;
 2. syntax: `CONCAT_WS(<separator>, <column1>, <column2>,...)`<br >
 	-e.g. `CONCAT_WS(', ', address, city)` = 'address, city'<br >
 3. CONCAT_WS will skip NULL and won't add additional separator<br >
+## 114. CAST<br >
+```
+SELECT CONCAT('$', CAST(SUM(order_amount) AS STRING)) AS total_amount_string
+FROM orders
+WHERE order_status = 'Completed';
+```
+1. syntax: `CAST(<column> AS <DATA_TYPE>)`: <br >
+	- `CAST(<column> AS CHAR)`<br >
+	- `CAST(<column> AS SIGNED/UNSIGNED)`<br >
+	- `CAST(<column> AS DATETIME/TIMESTAMP)`<br >
+	- `CASE(<column> AS BOOLEAN)`<br >
+2. `CAST(<column> AS DATETIME/TIMESTAMP)` is faster than `DATE_FORMAT(<column>, '%Y-%m-%d')`<br >
+3. CAST DATETIME/TIMESTAMP convert to <ins>Date</ins> type, DATE_FORMAT convert to <ins>String</ins> type<br >
+4. `CAST(<column> AS DATETIME)` output 'YYYY-MM-DD HH:MM:SS'<br >
+	V.S. `EXTRACT(YEAR FROM order_date)` output 'YYYY', other ex: MONTH, DAY, HOUR, MINUTE, SECOND<br >
+5. MySQL doesn't allow `CAST(<column> AS VARCHAR)` and `CAST(<column> AS STRING)`<br >
+6. `TRY_CAST()` is function for BigQuery, Snowflake, Azure SQL Database, SQL Server, not for MySQL<br >
