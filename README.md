@@ -1637,3 +1637,36 @@ JOIN orders o
 	6. Minute: 		%i: 58<br >
 	7. Second: 		%s: 58<br >
 	8. AM/PM: 		%p: AM<br >
+## 111. Data type<br >
+### Common numeric data type:<br >
+1. `INT`: integer<br >
+2. `DECIMAL(p, s)`: p (precision) = total digits, s (scale) = digits after decimal point<br >
+	1. ex: DECIMAL(5, 2): total digit = 5, digit before decimal = 3, digit after decimal = 2<br >
+	2. Highest value: 999.99, lowest value: -999.99<br >
+	3. Why call <ins>precision</ins> and <ins>scale</ins>:<br >
+		- precision (精準) means how detail is it, e.g. 500 m = lower precision, 500.21 m = higher precision<br >
+			In SQL, it's how many "Siginificant digit" in DECIMAL = total digit<br >
+		- scale (規模) means zoom in level, e.g.<br >
+			1. scale 0 = zoom in 0 digit: integer<br >
+			2. scale 2 = zoom in 2 digit: 0.01<br >
+			3. scale 9 = zoom in 9 digit: 0.000000001<br >
+3. `FLOAT`: float point number<br >
+	Difference between DECIMAL and FLOAT:<br >
+	- DECIMAL is exact number: 0.01 store as 0.01 no change<br >
+		Use case: Money, Accounting<br >
+	- FLOAT is approximate number: 0.01 can store as 0.010002<br >
+		Use case: Scientific data<br >
+### Character string data type:<br >
+1. `CHAR(n)`: fixed length string,<br >
+	e.g. CHAR(10) store 'cat' still use 10 char spaces<br >
+2. `VARCHAR(n)`: variable length string, <br >
+	e.g. VARCHAR(10) store 'cat' only use 4 char spaces (3 for cat, 1 for string length)<br >
+### Date and time data type:<br >
+1. `DATE`: store date YYYY-MM-DD<br >
+2. `TIME`: store time HH:MM:SS<br >
+3. `TIMESTAMP`: store date and time YYYY-MM-DD HH:MM:SS<br >
+### Boolean data type:<br >
+`BOOLEAN`: store True or False<br >
+### Binary data type:<br >
+`BLOB` (binary large object): store unstructure data that doesn't fit in table:<br >
+	e.g. image: JPG, PNG, GIF, audio: MP3, document: PDF, compiled data: python, java binary code<br >
