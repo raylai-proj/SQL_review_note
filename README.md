@@ -1726,3 +1726,18 @@ FROM users;
 4. syntax: `RIGHT(<string>, number)`: return number of letters in string from right<br >
 5. COALSECE in CONCAT to make sure if cancel the CASE and direct CONCAT user_name won't correpted<br >
 6. LEGNTH can be in SELECT, WHERE, JOIN ON, GROUP BY, ORDER BY<br >
+## 117. calculate remainder<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	o.order_date,
+	o.order_amount
+FROM customers c
+JOIN orders o
+	ON c.customer_id = o.customer_id
+	AND LENGTH(customer_name) % 2 <> 0;
+
+--	to check LEGNTH is odd, use % (same as python), LENGTH(customer_name) % 2 <> 0
+```
