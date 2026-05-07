@@ -1759,11 +1759,11 @@ FROM customers;
 
 --	get first_name from customer_name by locate the mid space index
 ```
-1. SUBSTRING syntax: `SUBSTRING(<column>, <start_index>, <length>)`: return substring start at <ins>start_index</ins> with <ins>length</ins>.<br >
+1. SUBSTRING syntax: `SUBSTRING(<column>, <start_index>, (optional)<length>)`: return substring start at <ins>start_index</ins> with <ins>length</ins>. If no length, SUBSTRING return rest of string at start_index<br >
 2. LEFT syntax: `LEFT(<string>, <number>)`: return number of letters in string from left.<br >
 3. RIGHT syntax: `RIGHT(<string>, <number>)`: return number of letters in string from right.<br >
 4. if `<number>` in LEFT or RIGHT larger than string, they will return whole string.<br >
-5. LOCATE syntax: `LOCATE(<target_string>, <whole_string>, (optional)<start_index>)`: return <ins>index</ins> of target_string in whole_string.<br >
+5. LOCATE syntax: `LOCATE(<target_string>, <whole_string>, (optional)<start_index>)`: return <ins>index</ins> of target_string in whole_string. If no start_index, LOCATE search starts at index 1<br >
 6. Index in SQL start at <ins>1</ins>.<br >
 7. LOCATE return <ins>0</ins> when not found (use CASE or IF to handle not found situation).<br >
 8. SUBSTRING, LEFT, RIGHT used on get first name, last name, remove unnecessary char, separate word by delimiter.<br >
