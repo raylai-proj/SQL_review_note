@@ -1767,3 +1767,19 @@ FROM customers;
 6. Index in SQL start at <ins>1</ins>.<br >
 7. LOCATE return <ins>0</ins> when not found (use CASE or IF to handle not found situation).<br >
 8. SUBSTRING, LEFT, RIGHT used on get first name, last name, remove unnecessary char, separate word by delimiter.<br >
+## 119. SUBSTRING & RIGHT to remove prefix<br >
+```
+SELECT
+	SUBSTRING(
+		product_name,
+		4,
+		LENGTH(product_name)
+	) AS cleaned_name,
+	RIGHT(
+		product_name,
+		LENGTH(produuct_name)-3
+	)
+FROM products;
+
+--	a way to remove first several letters/prefix, e.g. remove first 3 letters
+```
