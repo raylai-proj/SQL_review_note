@@ -1834,3 +1834,18 @@ FROM employees;
 
 --	get short department name and full name of employee
 ```
+## 124. UPPER() & LOWER()<br >
+```
+SELECT
+	CASE
+		WHEN LENGTH(COALSECE(name, '')) > 0 THEN CONCAT(UPPER(LEFT(name, 1)), LOWER(SUBSTRING(name, 2)))
+		ELSE 'Unknown'
+	END AS clean_name
+FROM users;
+
+--	get clean name with first letter capitalized
+```
+1. `UPPER(string)`: return all uppercase string.<br >
+2. `LOWER(string)`: return all lowercase string.<br >
+3. `UPPER(NULL)`,`LOWER(NULL)` return NULL.<br >
+4. UPPER, LOWER can make case Insensitive comparison.<br >
