@@ -1783,3 +1783,17 @@ FROM products;
 
 --	a way to remove first several letters/prefix, e.g. remove first 3 letters
 ```
+## 120. EXTRACT MONTH<br >
+```
+SELECT
+	EXTRACT(MONTH FROM order_date) AS month1,
+	SUBSTRING(
+		order_date,
+		6,
+		2
+	) AS month2,
+	DATE_FORMAT(order_date, '%m') AS month3
+FROM orders;
+
+--	3 ways to extract MONTH from date
+```
