@@ -1849,3 +1849,22 @@ FROM users;
 2. `LOWER(string)`: return all lowercase string.<br >
 3. `UPPER(NULL)`,`LOWER(NULL)` return NULL.<br >
 4. UPPER, LOWER can make case Insensitive comparison.<br >
+## 125. COALESCE() & NULLIF() & CAST()<br >
+```
+SELECT
+	e1.employee_id AS employee_id,
+	e1.first_name AS employee_first_name,
+	COALESCE(e2.employee_name, 'Manager') AS manager_name,
+	COALESCE(CAST(e1.manager_id AS CHAR), 'X') AS manager_id
+FROM employees e1
+LEFT JOIN employees e2
+	ON e1.manager_id = e2.employee_id;
+
+--	get employees and their manager names and ids
+--	if no manager, put 'Manager' in manager_name, 'X' in manager_id 
+```
+1. syntax: `COALESCE(<column1_value>, <column2_value>,...)`: return first not NULL value.<br >
+2. COALESCE make sure: <ins>return value is not a NULL.</ins><br >
+3. syntax: `NULLIF(<column1_value>, <column2_value>)`: return NULL if `<column1_value>`=`<column2_value>`.<br >
+4. NULLIF make sure: <ins>no divide by 0</ins> case.<br >
+5. LEFT JOIN is important to work with COALESCE: LEFT JOIN -> NULL, let COALESCE fill default value.<br >
