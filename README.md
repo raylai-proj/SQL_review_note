@@ -1756,6 +1756,8 @@ SELECT
 	) AS first_name2,
 	LOCATE(' ', customer_name) AS space_index
 FROM customers;
+
+--	get first_name from customer_name by locate the mid space index
 ```
 1. SUBSTRING syntax: `SUBSTRING(<column>, <start_index>, <length>)`: return substring start at <ins>start_index</ins> with <ins>length</ins>.<br >
 2. LEFT syntax: `LEFT(<string>, <number>)`: return number of letters in string from left.<br >
