@@ -1824,3 +1824,13 @@ FROM customers;
 2. `TRIM(<column>)`: remove leading & trailing spaces.<br >
 3. `TRIM(NULL)` return NULL.<br >
 4. To make sure LENGTH doesn't count space: `LENGTH(TRIM(<string/column>))`<br >
+## 123. LEFT & CONCAT_WS example<br >
+```
+SELECT
+	LEFT(department, 3) AS short_dept_name,
+	employee_id,
+	CONCAT_WS(' ', first_name, last_name) AS full_name
+FROM employees;
+
+--	get short department name and full name of employee
+```
