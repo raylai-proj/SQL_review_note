@@ -1797,3 +1797,15 @@ FROM orders;
 
 --	3 ways to extract MONTH from date
 ```
+## 121. SUBSTRING find email domain<br >
+```
+SELECT
+	customer_name,
+	SUBSTRING(
+		email,
+		LOCATE('@', email)+1
+	) AS email_domain
+FROM customers;
+
+--	use SUBSTRING to find email domain
+```
