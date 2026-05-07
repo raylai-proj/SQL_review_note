@@ -1809,3 +1809,18 @@ FROM customers;
 
 --	use SUBSTRING to find email domain
 ```
+## 122. TRIM()<br >
+```
+SELECT
+	customer_id,
+	customer_name,
+	TRIM(address) AS trimmed_address,
+	city
+FROM customers;
+
+--	remove leading and trailing spaces in address
+```
+1. Syntax: `TRIM(<BOTH/LEADING/TRAILING> <removed_string/space> FROM <whole_string/column>)`: TRIM remove both/leading/trailing removed_string of whole string.<br >
+2. `TRIM(<column>)`: remove leading & trailing spaces.<br >
+3. `TRIM(NULL)` return NULL.<br >
+4. To make sure LENGTH doesn't count space: `LENGTH(TRIM(<string/column>))`<br >
