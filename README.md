@@ -1932,3 +1932,25 @@ WHERE unit_price > (
 --	find product price larger than
 --	average price in category
 ```
+## 129. Multiple CTEs<br >
+```
+WITH stage1 AS (
+	SELECT
+		DATE_FORMAT(order_date, '%Y-%m') AS month,
+		order_amount AS amount
+	FROM orders
+),
+sales_per_month AS (
+	SELECT
+		month
+		SUM(amount) AS monthly_sales
+	FROM stage1
+	GROUP BY month
+)
+SELECT *
+FROM sales_per_month;
+
+--	multiple CTEs to get monthly sales
+```
+1. Only need <ins>1 WITH</ins> for multiple CTEs.<br >
+2. Every CTE separated by a comma `(),()`<br >
