@@ -1914,3 +1914,21 @@ WHERE unit_price > cate_avg_price;
 ```
 1. `PARTITION BY` = `temp GROUP BY `<br >
 2. `AVG(unit_price) OVER (PARTITION BY category)` = get average unit_price by temperary grouped by category<br >
+## 128. Subquery to find product price larger than average price in category<br >
+```
+SELECT
+	product_id,
+	product_name,
+	unit_price,
+	category
+FROM products p1
+WHERE unit_price > (
+	SELECT AVG(unit_price)
+	FROM products p2
+	WHERE p2.category = p1.category
+);
+
+--	(Not recommended) subquery to
+--	find product price larger than
+--	average price in category
+```
