@@ -1953,4 +1953,4 @@ FROM sales_per_month;
 --	multiple CTEs to get monthly sales
 ```
 1. Only need <ins>1 WITH</ins> for multiple CTEs.<br >
-2. Every CTE separated by a comma `(),()`<br >
+2. Every CTE separated by a comma `WITH CTE1 AS(), CTE2 AS()`<br >
