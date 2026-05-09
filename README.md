@@ -1989,3 +1989,17 @@ WHERE avg_salary > (SELECT AVG(salary) FROM employees);
 ```
 1. CTE for employee count and average salary in each department.<br >
 2. Filter those department with salary > overall average salary.<br >
+## 132. HAVING to replace CTE<br >
+```
+SELECT
+	department,
+	COUNT(DISTINCT employee_id) AS total_employees,
+	AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > (SELECT AVG(salary) FROM employees);
+
+-- After GROUP BY, HAVING department salary > overall salary.
+```
+1. COUNT employee number and AVG salary based on department<br >
+2. HAVING filter department group for department salary > overall salary<br >
