@@ -1890,3 +1890,27 @@ JOIN avg_cate_price a
 ```
 1. Use CTE for subquery<br >
 2. if want to FROM multiple tables, use JOIN, LEFT JOIN<br >
+## 127. Window function PARTITION BY<br >
+```
+SELECT
+	product_id,
+	product_name,
+	unit_price,
+	category
+FROM (
+	SELECT
+		product_id,
+		product_name,
+		unit_price,
+		category,
+		AVG(unit_price) OVER (PARTITION BY category) AS cate_avg_price
+	FROM products
+) AS stage1
+WHERE unit_price > cate_avg_price;
+
+--	use Window function and subquery
+--	to  replace CTE and GROUP BY
+--	to find product with price larger than average price in category
+```
+1. `PARTITION BY` = `temp GROUP BY `<br >
+2. `AVG(unit_price) OVER (PARTITION BY category)` = get average unit_price by temperary grouped by category<br >
