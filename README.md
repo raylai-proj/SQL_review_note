@@ -1954,3 +1954,38 @@ FROM sales_per_month;
 ```
 1. Only need <ins>1 WITH</ins> for multiple CTEs.<br >
 2. Every CTE separated by a comma `WITH CTE1 AS(), CTE2 AS()`<br >
+# 130. Window function for incremental average<br >
+```
+WITH month_sales AS (
+	SELECT
+		DATE_FORMAT(order_date, '%Y-%m') AS month,
+		AVG(total_amount) AS amount
+	FROM walmart_orders
+	GROUP BY month
+)
+SELECT
+	month,
+	AVG(amount) OVER (ORDER BY month) AS monthly_average
+FROM month_sales;
+
+-- incremental amount_average by CTE + window function
+```
+# 131. Use CTE find department salary larger than overall average salary<br >
+```
+WITH dep_avg_salary AS (
+	SELECT
+		department,
+		COUNT(DISTINCT employee_id) AS total_employees,
+		AVG(salary) AS avg_salary
+	FROM employees
+	GROUP BY department
+)
+SELECT *
+FROM dep_avg_salary
+WHERE avg_salary > (SELECT AVG(salary) FROM employees);
+
+--	Find how many people in each department that
+--	department average salary higher than overall average salary.
+```
+1. CTE for employee count and average salary in each department.<br >
+2. Filter those department with salary > overall average salary.<br >
