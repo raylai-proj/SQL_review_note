@@ -2003,3 +2003,93 @@ HAVING AVG(salary) > (SELECT AVG(salary) FROM employees);
 ```
 1. COUNT employee number and AVG salary based on department<br >
 2. HAVING filter department group for department salary > overall salary<br >
+## 133. Window Function: RANK(), DENSE_RANK(), ROW_NUMBER(), NTILE()<br >
+```
+WITH customer_orders AS (
+	SELECT
+		customer_id,
+		SUM(order_amount) AS order_amount
+	FROM orders
+	GROUP BY customer_id
+)
+SELECT
+	c.customer_id,
+	c.customer_name,
+	a.order_amount,
+	RANK() OVER (ORDER BY a.order_amount DESC) AS "rank"
+FROM customers AS c
+JOIN customer_orders AS a
+	USING(customer_id);
+
+-- get the rank of order_amount with customer_id, customer_name, rank
+```
+1. Window function syntax: `function() OVER (PARTITION BY <column1> ORDER BY <column2> ROWS/RANGE <frame boundary>)`<br >
+	1. `function()` = aggregate function:<br >
+		1. rankers: `RANK()`, `DENSE_RANK()`, `ROW_NUMBER()`, `NTILE()`<br >
+			- rankers view whole table: <ins>not allowed</ins> to add `ROWS/RANGE` and frame boundary keywords: `PRECEDING`, `FOLLOWING`, `UNBOUNDED`, `CURRENT ROW`<br >
+		2. calculators: `SUM()`, `AVG()`, `COUNT()`, `MIN()`, `MAX()`<br >
+			- calculators can have `DESC/ASC(default)` and `ROWS/RANGE` + frame boundary keywords, e.g.:<br >
+				1. `SUM(amount) OVER (ORDER BY date)`: start at beginning and sum up amount till today<br >
+				2. `SUM(amount) OVER (ORDER BY date DESC)`: start at the end and sum up amount reversely till today<br >
+	2. frame boundary keyword: `PRECEDING`, `FOLLOWING`, `UNBOUNDED`, `CURRENT_ROW`<br >
+		1. `UNBOUNDED PRECEDING`: from first row<br >
+		2. `CURRENT ROW`: the current row<br >
+		3. `n PRECEDING / n FOLLOWING`: n rows/values before/after<br >
+		4. `UNBOUNDED FOLLOWING`: to the last row<br >
+	3. ROWS/RANGE<br >
+		1. `ROWS`: physical row as a unit: `AVG(amount) OVER (ORDER BY sale_date ROW 2 PRECEDING) AS three_row_avg`:<br >
+			- avg current row + 2 above rows<br >
+		2. `RANGE`: value range as a unit: `AVG(amount) OVER (ORDER BY sale_date RANGE 2 PRECEDING) AS three_sale_date_avg`:<br >
+			- avg current sale <ins>date</ins> + 2 previous sale <ins>date</ins> => this is moving average<br >
+	4. Examples:<br >
+		1. short: `OVER (ORDER BY date)`<br >
+			- original: `OVER (ORDER BY date RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`<br >
+		2. short: `OVER (ORDER BY date RANGE 2 PRECEDING)`<br >
+			- original: `OVER (ORDER BY date RANGE BETWEEN 2 PRECEDING AND CURRENT ROW)`<br >
+		3. short: `OVER (ORDER BY date ROWS 5 PRECEDING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN 5 PRECEDING AND CURRENT ROW)`<br >
+		4. short: `OVER (ORDER BY date ROWS 1 FOLLOWING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)`<br >
+		5. short: `OVER (ORDER BY date)`<br >
+			- mid: `OVER (ORDER BY date ROWS UNBOUNDED PRECEDING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`<br >
+		6. short: `OVER (ORDER BY date ROWS UNBOUNDED FOLLOWING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)`<br >
+		7. `BETWEEN A AND B` must follow time order: A must earlier than B<br >
+	5. Both PARTITION BY <group>, ORDER BY <value> are optional<br >
+		- e.g. `SUM(amount) OVER ()`: sum up all amounts
+2. window function vs aggregation function:<br >
+	1. `SUM(amount)`: shrink / collapse to 1 row with total amount<br >
+	2. `SUM(amount) OVER()`: keep every row and <ins>append total amount in every row</ins><br >
+3. Use cases:<br >
+	1. running total (cumulative by time) = `SUM(<column>) OVER (ORDER BY <time>)`<br >
+	2. running average (cumulative average) = `AVG(<column>) OVER (ORDER BY <time>)`<br >
+	3. running count (cumulcative count) = `COUNT(<column>) OVER (ORDER BY <time>)`<br >
+4. RANK()/DENSE_RANK()/ROW_NUMBER() syntax: `RANK()/DENSE_RANK()/ROW_NUMBER() OVER (<PARTITION BY year> ORDER BY price DESC)`<br >
+	1. RANK()/DENSE_RANK()/ROW_NUMBER() don't take argument<br >
+	2. RANK()/DENSE_RANK()/ROW_NUMBER() output integer<br >
+	3. orders when tie:<br >
+		1. RANK(): 1st, 2nd, 2nd, <ins>4th</ins><br >
+		2. DENSE_RANK(): 1st, 2nd, 2nd, <ins>3rd</ins><br >
+		3. ROW_NUMBER(): 1st, 2nd, 3rd, 4th: if a tie, ROW_NUMBER random assign<br >
+5. To avoid <ins>NULL</ins> in window function: use `OVER (ORDER BY COALESCE(price, 0))`: to output 0 instead NULL<br >
+6. To find top-selling products every year:<br >
+	1. Use GROUP BY to get total selling every products every year<br >
+    2. Use window function to get DENSE_RANK()<br >
+    ```
+    WITH CTE AS (
+		SELECT product, year, SUM(sales) AS revenue
+    	FROM sales
+    	GROUP BY product, year
+    	ORDER BY year
+    )
+ 	SELECT
+ 		c.*,
+ 		DENSE_RANK() OVER (PARTITION BY year ORDER BY revenue DESC)
+ 	FROM CTE c;
+	```
+7. RANK() DESC vs ASC:<br >
+	- `RANK() OVER (ORDER BY price DESC)`: highest price is rank#1<br >
+	- `RANK() OVER (ORDER BY price ASC)`: lowest price is rank#1<br >
+8. `CAST (sales / SUM(sales) OVER () * 100 AS DECIMAL(10,2))`: calculate what percentage each sales contributes to the total<br >
+	
