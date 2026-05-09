@@ -1868,3 +1868,25 @@ LEFT JOIN employees e2
 3. syntax: `NULLIF(<column1_value>, <column2_value>)`: return NULL if `<column1_value>`=`<column2_value>`.<br >
 4. NULLIF make sure: <ins>no divide by 0</ins> case.<br >
 5. LEFT JOIN is important to work with COALESCE: LEFT JOIN -> NULL, let COALESCE fill default value.<br >
+## 126. CTE to find product price larger than average price in category<br >
+```
+WITH avg_cate_price AS (
+	SELECT category, AVG(unit_price) AS avg_price
+	FROM products
+	GROUP BY category
+)
+SELECT
+	p.product_id,
+	p.product_name,
+	p.unit_price,
+	p.category
+FROM products p
+JOIN avg_cate_price a
+	ON p.category = a.category
+	AND p.unit_price > a.avg_price;
+
+--	use CTE to find all products with their price
+--	larger than average price in their category
+```
+1. Use CTE for subquery<br >
+2. if want to FROM multiple tables, use JOIN, LEFT JOIN<br >
