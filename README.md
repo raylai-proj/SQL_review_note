@@ -1954,7 +1954,7 @@ FROM sales_per_month;
 ```
 1. Only need <ins>1 WITH</ins> for multiple CTEs.<br >
 2. Every CTE separated by a comma `WITH CTE1 AS(), CTE2 AS()`<br >
-# 130. Window function for incremental average<br >
+## 130. Window function for incremental average<br >
 ```
 WITH month_sales AS (
 	SELECT
@@ -1970,7 +1970,7 @@ FROM month_sales;
 
 -- incremental amount_average by CTE + window function
 ```
-# 131. Use CTE find department salary larger than overall average salary<br >
+## 131. Use CTE find department salary larger than overall average salary<br >
 ```
 WITH dep_avg_salary AS (
 	SELECT
