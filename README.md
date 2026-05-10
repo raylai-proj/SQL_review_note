@@ -2205,3 +2205,23 @@ FROM products;
 --	In each category, show product (product_name and unit_price) of the next higher price 
 ```
 Syntax: `LEAD(<column>, <offset>, <default value>)`<br >
+## 139. LAG()<br >
+```
+SELECT
+	order_id,
+	order_date,
+	order_amount,
+	LAG(order_date, 1, NULL) OVER (
+		PARTITION BY customer_id
+		ORDER BY order_date
+	) AS previous_order_date,
+	LAG(order_amount, 1, NULL) OVER (
+		PARTITION BY customer_id
+		ORDER BY order_date
+	) AS previous_order_amount,
+	customer_id
+FROM orders;
+
+--	In each customer_id, show order (order_date and order_amount) of the previous order_date
+```
+Syntax: `LAG(<column>, <offset>, <default_value>)`<br >
