@@ -2123,3 +2123,36 @@ FROM orders;
 	1. syntax: `LAST_VALUE(<column1>) OVER (ORDER BY <column2> ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)`<br >
 	2. same as `LAST_VALUE(<column1>) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)`: show last column1 value<br >
 	3. LAST_VALUE default return <ins>current row value</ins> => we have to always use `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`<br >
+## 135. CTE vs Window function<br >
+- Use CTE to find employee salary difference based on their average department salary:<br >
+```
+WITH avg_dep_salary AS (
+	SELECT
+		AVG(salary) AS avg_department_salary,
+		department
+	FROM employees
+	GROUP BY department
+)
+SELECT
+	e.first_name,
+	e.last_name,
+	e.salary,
+	a.avg_department_salary,
+	e.salary - a.avg_department_salary AS salary_difference
+FROM employees e
+JOIN avg_dep_salary a
+	USING(department);
+```
+- Use window function instead of CTE:<br >
+```
+SELECT
+	first_name,
+	last_name,
+	salary,
+	AVG(salary) OVER (PARTITION BY department) AS avg_department_salary
+	salary - AVG(salary) OVER (PARTITION BY department) AS salary_difference
+FROM employees e;
+```
+1. In window function version, because `avg_department_salary` and `salary_difference` create in the same `SELECT`, we have to write window function twice, cannot refer `avg_department_salary` to calculate `salary_difference`<br >
+2. window function can be an item to calculate in `SELECT`<br >
+3. CTE: better for maintain, this window function: better for quickly show data<br >
