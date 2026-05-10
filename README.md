@@ -1473,3 +1473,755 @@ JOIN employees e2
 5. To avoid repeating 1. identity case (employee_id=1, employee_id=1), 2. symmetric pair (employee_id=1, employee_id=2), (employee_id=2, employee_id=1):<br >
 	use <ins>smaller than</ins> comparison `AND e1.employee_id < e2.employee_id`<br >
 6. If manager_id is NULL, JOIN see NULL as UNKNOWN, and see UNKNOWN as False, so it won't show up.<br >
+## 101. CURDATE() vs. CURTIME() vs. NOW()<br >
+CURDATE(): Year-Month-Date<br >
+```
+--	in MySQL:
+SELECT CURDATE() AS current_date;
+--	in PostgreSQL:
+SELECT CURRENT_DATE AS current_date;
+--	in SQL server:
+SELECT CAST(GETDATE() AS DATE) AS current_date;
+```
+CURTIME():	Hour:Minute:Second<br >
+```
+--	in MySQL:
+SELECT CURTIME() AS current_time;
+--	in PostgreSQL:
+SELECT CURRENT_TIME AS current_time;
+--	in SQL server:
+SELECT CAST(GETDATE() AS TIME) AS current_time;
+```
+Date+Time:	Year-Month-Date Hour:Minute:Second<br >
+```
+--	in MySQL:
+SELECT NOW() AS current_datetime;
+--	in PostgreSQL:
+SELECT CURRENT_TIMESTAMP AS current_datetime;
+--	in SQL server:
+SELECT GETDATE() AS current_datetime;
+```
+## 102. DEFAULT NOW()<br >
+```
+ALTER TABLES employees
+ADD COLUMN create_at TIMESTAMP DEFAULT NOW();
+
+--	add create_at column to log when when was a column born
+--	column data type is TIMESTAMP
+--	column default value is NOW()
+```
+## 103. INTERVAL<br >
+```
+SELECT *
+FROM orders
+WHERE order_date >= CURDATE() - INTERVAL 30 HOUR - INTERVAL 30 MINUTE;
+```
+1. syntax: INTERVAL \<quantity\> \<unit\><br >
+	\<quantity\>: + or - number, e.g. 30, -7<br >
+	\<unit\>: YEAR, MONTH, DAY, WEEK, HOUR, MINUTE<<br >
+2. INTERVAL can be in SELECT, WHERE, ON<br >
+3. Day + 1 day:<br >
+	MySQL: `create_at + INTERVAL 1 DAY;`<br >
+	PostgreSQL: `create_at + INTERVAL '1 DAY'`<br >
+	SQL server: `DATEADD(DAY, 1, create_at)`<br >
+## 104. INSERT INTO + SELECT<br >
+```
+INSERT INTO factsales (
+	order_id,
+	customer_id,
+	gross_amount,
+	tax_amount,
+	processed_at
+)
+SELECT
+	order_id,
+	customer_id,
+	total_price,
+	total_price * 0.05,
+	NOW(),
+FROM staging_orders
+WHERE status = 'Completed'
+	AND order_date = CURDATE();
+```
+Use `INSERT INTO` to add rows from <ins>table: staging_orders</ins> to <ins>table: factsales</ins> by `SELECT`<br > 
+## 105. DATEDIFF()<br >
+```
+SELECT
+	order_id,
+	order_date,
+	shipped_date,
+	DATEDIFF(shipped_date, order_date) AS days_to_ship
+FROM orders
+WHERE DATEDIFF(shipped_date, order_date) > 3;
+
+--	find out how many days take to ship after placing orders
+--	find shipping takes over 3 days for slow shipment
+```
+- syntax: `DATEDIFF(<end_date>, <start_date>)`, e.g. `DATEDIFF('2026-03-08', '2026-03-01')`<br >
+	=> end_date - start_date = '2026-03-08' - '2026-03-01' = 7<br >
+## 106. TIMEDIFF()<br >
+```
+SELECT
+	job_name,
+	start_time,
+	end_time,
+	TIMEDIFF(end_time, start_time) AS duration
+FROM job_logs
+WHERE job_name = 'Daily_Sales_Sync';
+
+--	find out what's the latency of Daily_Sales_Sync
+```
+- syntax: `TIMEDIFF(<end_time>, <start_time>)`, e.g. `TIMEDIFF('14:30:05', '14:00:00')`<br >
+	=> end_time - start_time = '14:30:05' - '14:00:00' = '00:30:05'<br >
+## 107. TIMESTAMPDIFF()<br >
+```
+SELECT
+	u.user_id,
+	TIMESTAMPDIFF(u.signup_time, a.first_action_time) AS hours_to_action
+FROM users u
+JOIN user_actions a
+	USING(user_id)
+WHERE TIMESTAMPDIFF(HOUR, u.signup_time, a.first_action_time) <= 24;
+
+--	Product Manager wants to find if user performed an action after signning up in 24 hours
+```
+1. syntax `TIMESTAMPDIFF(unit, start, end)`, e.g. `TIMESTAMPDIFF(HOUR, u.signup_time, a.first_action_time)`<br >
+	=> end - start = a.first_action_time - u.signup_time<br >
+2. TIMESTAMPDIFF unit: FRAC_SECOND, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, QUARTER, YEAR<br >
+	FRAC_SECOND is microsecond = $$10^{-6}$$ seconds = one millionth<br >
+3. TIMESTAMPDIFF do Floor 無條件捨去法<br >
+4. Return type:
+	1. DATEDIFF return INTEGER<br >
+	2. TIMEDIFF return STRING<br >
+	3. TIMESTAMPDIFF return INTEGER<br >
+## 108. INTERVAL<br >
+```
+SELECT
+	o.order_id,
+	o.order_status,
+	o.order_amount,
+	o.order_date,
+	o.order_date + INTERVAL 7 DAY AS expected_delivery_date,
+	o.order_date - INTERVAL 3 DAY AS last_cancellation_date,
+	c.customer_id,
+	c.customer_name
+FROM orders o
+JOIN customers c
+	ON o.customer_id = c.customer_id;
+```
+- syntax: `<column> +/- INTERVAL <number> <unit>`, e.g. o.order_date + INTERVAL 7 DAY AS expected_delivery_date<br >
+- make sure `<column>` type match `<unit>` type<br > 
+## 109. DATE_ADD(), DATE_SUB()<br >
+1. `DATE_ADD()` syntax: `DATE_ADD(<column>, INTERVAL <number> <unit>)`, e.g. `DATE_ADD(o.order_date, INTERVAL 7 DAY) AS expected_delivery_date`<br >
+2. `DATE_SUB()` syntax: `DATE_SUB(<column>, INTERVAL <number> <unit>)`, e.g. `DATE_SUB(o.order_date, INTERVAL 3 DAY) AS last_cancellation_date`<br >
+3. DATE_ADD(), DATE_SUB() can be replaced by INTERVAL<br >
+	-`DATE_ADD(NOW(), INTERVAL 20 DAY) AS deadline` => `NOW() + INTERVAL 20 DAY AS deadline`<br >
+	-`DATE_SUB(NOW(), INTERVAL 3 DAY) AS last_cancel_date` => `NOW() - INTERVAL 3 DAY AS last_cancel_date`<br >
+## 110. DATE_FORMAT<br >
+```
+SELECT
+	c.customer_name,
+	DATE_FORMAT(o.order_date, '%d/%m/%Y') AS order_date,
+	DATE_FORMAT(o.order_date, '%W') AS weekday
+FROM customers c
+JOIN orders o
+	USING(customer_id);
+```
+1. DATE_FORMAT for formatting date<br >
+2. DATE_FORMAT: <br >
+	1. Year: 		%Y: 2026, 		%y: 26<br >
+	2. Month: 		%M: February, 	%m: 02, 	%b: Feb<br >
+	3. Day: 		%D: 3rd, 		%d: 03, 	%e: 3<br >
+	4. Weekday: 	%W: Sunday, 	%a: Sun<br >
+	5. Hour(24/12): %H: 13, 		%h: 1<br >
+	6. Minute: 		%i: 58<br >
+	7. Second: 		%s: 58<br >
+	8. AM/PM: 		%p: AM<br >
+## 111. Data type<br >
+### Common numeric data type:<br >
+1. `INT`: integer<br >
+2. `DECIMAL(p, s)`: p (precision) = total digits, s (scale) = digits after decimal point<br >
+	1. ex: DECIMAL(5, 2): total digit = 5, digit before decimal = 3, digit after decimal = 2<br >
+	2. Highest value: 999.99, lowest value: -999.99<br >
+	3. Why call <ins>precision</ins> and <ins>scale</ins>:<br >
+		- precision (精準) means how detail is it, e.g. 500 m = lower precision, 500.21 m = higher precision<br >
+			In SQL, it's how many "Siginificant digit" in DECIMAL = total digit<br >
+		- scale (規模) means zoom in level, e.g.<br >
+			1. scale 0 = zoom in 0 digit: integer<br >
+			2. scale 2 = zoom in 2 digit: 0.01<br >
+			3. scale 9 = zoom in 9 digit: 0.000000001<br >
+3. `FLOAT`: float point number<br >
+	Difference between DECIMAL and FLOAT:<br >
+	- DECIMAL is exact number: 0.01 store as 0.01 no change<br >
+		Use case: Money, Accounting<br >
+	- FLOAT is approximate number: 0.01 can store as 0.010002<br >
+		Use case: Scientific data<br >
+### Character string data type:<br >
+1. `CHAR(n)`: fixed length string,<br >
+	e.g. CHAR(10) store 'cat' still use 10 char spaces<br >
+2. `VARCHAR(n)`: variable length string, <br >
+	e.g. VARCHAR(10) store 'cat' only use 4 char spaces (3 for cat, 1 for string length)<br >
+### Date and time data type:<br >
+1. `DATE`: store date YYYY-MM-DD<br >
+2. `TIME`: store time HH:MM:SS<br >
+3. `TIMESTAMP`: store date and time YYYY-MM-DD HH:MM:SS<br >
+### Boolean data type:<br >
+`BOOLEAN`: store True or False<br >
+### Binary data type:<br >
+`BLOB` (binary large object): store unstructure data that doesn't fit in table:<br >
+	e.g. image: JPG, PNG, GIF, audio: MP3, document: PDF, compiled data: python, java binary code<br >
+## 112. CONCAT()<br >
+```
+SELECT
+	customer_name,
+	customer_id,
+	CONCAT(address, ', ', city) AS full_address
+FROM customers; 
+```
+1. `CONCAT()` connects multiple <ins>columns (horizontal)</ins>, combine pure string, output string from function<br >
+2. `UNION()` conncects multiple <ins>rows (vertical)</ins><br >
+3. MySQL, PostgreSQL ignore NULL in `CONCAT()`, e.g. CONCAT('hi', NULL) => 'hi'<br >
+## 113. CONCAT_WS()<br >
+```
+SELECT
+	customer_id,
+	CONCAT_WS(', ', customer_name, address, city)
+FROM customers;
+```
+1. `CONCAT_WS()` = CONCAT with separator<br >
+2. syntax: `CONCAT_WS(<separator>, <column1>, <column2>,...)`<br >
+	-e.g. `CONCAT_WS(', ', address, city)` = 'address, city'<br >
+3. CONCAT_WS will skip NULL and won't add additional separator<br >
+## 114. CAST<br >
+```
+SELECT CONCAT('$', CAST(SUM(order_amount) AS STRING)) AS total_amount_string
+FROM orders
+WHERE order_status = 'Completed';
+```
+1. syntax: `CAST(<column> AS <DATA_TYPE>)`: <br >
+	- `CAST(<column> AS CHAR)`<br >
+	- `CAST(<column> AS SIGNED/UNSIGNED)`<br >
+	- `CAST(<column> AS DATETIME/TIMESTAMP)`<br >
+	- `CASE(<column> AS BOOLEAN)`<br >
+2. `CAST(<column> AS DATETIME/TIMESTAMP)` is faster than `DATE_FORMAT(<column>, '%Y-%m-%d')`<br >
+3. CAST DATETIME/TIMESTAMP convert to <ins>Date</ins> type, DATE_FORMAT convert to <ins>String</ins> type<br >
+4. `CAST(<column> AS DATETIME)` output 'YYYY-MM-DD HH:MM:SS'<br >
+	V.S. `EXTRACT(YEAR FROM order_date)` output 'YYYY', other ex: MONTH, DAY, HOUR, MINUTE, SECOND<br >
+5. MySQL doesn't allow `CAST(<column> AS VARCHAR)` and `CAST(<column> AS STRING)`<br >
+6. `TRY_CAST()` is function for BigQuery, Snowflake, Azure SQL Database, SQL Server, not for MySQL<br >
+## 115. DESCRIBE<br >
+How to check data type of columns: `DESCRIBE <table_name>`<br >
+## 116. LENGTH, LEFT, RIGHT<br >
+```
+SELECT
+	CASE
+		WHEN LENGTH(COALESCE(user_name, '')) > 4 THEN CONCAT(LEFT(COALESCE(user_name, ''), 4), '...'),
+		ELSE COALESCE(user_name, '')
+		END AS adjusted_username
+FROM users;
+```
+1. syntax: `LENGTH(<column>)` output string length, e.g.`LENGTH('test')`, `LENGTH(c.customer_name)`<br >
+2. use CONCAT() to join/connect strings<br >
+3. syntax: `LEFT(<string>, number)`: return number of letters in string from left<br >
+4. syntax: `RIGHT(<string>, number)`: return number of letters in string from right<br >
+5. COALSECE in CONCAT to make sure if cancel the CASE and direct CONCAT user_name won't correpted<br >
+6. LEGNTH can be in SELECT, WHERE, JOIN ON, GROUP BY, ORDER BY<br >
+## 117. calculate remainder<br >
+```
+SELECT
+	c.customer_id,
+	c.customer_name,
+	o.order_id,
+	o.order_date,
+	o.order_amount
+FROM customers c
+JOIN orders o
+	ON c.customer_id = o.customer_id
+	AND LENGTH(customer_name) % 2 <> 0;
+
+--	to check LEGNTH is odd, use % (same as python), LENGTH(customer_name) % 2 <> 0
+```
+## 118. SUBSTRING() & LOCATE()<br >
+```
+SELECT
+	customer_name,
+	SUBSTRING(
+		customer_name,
+		1,
+		LOCATE(' ', customer_name)-1
+	) AS first_name,
+	LEFT(
+		customer_name,
+		LOCATE(' ', customer_name)-1
+	) AS first_name2,
+	LOCATE(' ', customer_name) AS space_index
+FROM customers;
+
+--	get first_name from customer_name by locate the mid space index
+```
+1. SUBSTRING syntax: `SUBSTRING(<column>, <start_index>, (optional)<length>)`: return substring start at <ins>start_index</ins> with <ins>length</ins>. If no length, SUBSTRING return rest of string at start_index<br >
+2. LEFT syntax: `LEFT(<string>, <number>)`: return number of letters in string from left.<br >
+3. RIGHT syntax: `RIGHT(<string>, <number>)`: return number of letters in string from right.<br >
+4. if `<number>` in LEFT or RIGHT larger than string, they will return whole string.<br >
+5. LOCATE syntax: `LOCATE(<target_string>, <whole_string>, (optional)<start_index>)`: return <ins>index</ins> of target_string in whole_string. If no start_index, LOCATE search starts at index 1<br >
+6. Index in SQL start at <ins>1</ins>.<br >
+7. LOCATE return <ins>0</ins> when not found (use CASE or IF to handle not found situation).<br >
+8. SUBSTRING, LEFT, RIGHT used on get first name, last name, remove unnecessary char, separate word by delimiter.<br >
+## 119. SUBSTRING & RIGHT to remove prefix<br >
+```
+SELECT
+	SUBSTRING(
+		product_name,
+		4,
+		LENGTH(product_name)
+	) AS cleaned_name,
+	RIGHT(
+		product_name,
+		LENGTH(produuct_name)-3
+	)
+FROM products;
+
+--	a way to remove first several letters/prefix, e.g. remove first 3 letters
+```
+## 120. EXTRACT MONTH<br >
+```
+SELECT
+	EXTRACT(MONTH FROM order_date) AS month1,
+	SUBSTRING(
+		order_date,
+		6,
+		2
+	) AS month2,
+	DATE_FORMAT(order_date, '%m') AS month3
+FROM orders;
+
+--	3 ways to extract MONTH from date
+```
+## 121. SUBSTRING find email domain<br >
+```
+SELECT
+	customer_name,
+	SUBSTRING(
+		email,
+		LOCATE('@', email)+1
+	) AS email_domain
+FROM customers;
+
+--	use SUBSTRING to find email domain
+```
+## 122. TRIM()<br >
+```
+SELECT
+	customer_id,
+	customer_name,
+	TRIM(address) AS trimmed_address,
+	city
+FROM customers;
+
+--	remove leading and trailing spaces in address
+```
+1. Syntax: `TRIM(<BOTH/LEADING/TRAILING> <removed_string/space> FROM <whole_string/column>)`: TRIM remove both/leading/trailing removed_string of whole string.<br >
+2. `TRIM(<column>)`: remove leading & trailing spaces.<br >
+3. `TRIM(NULL)` return NULL.<br >
+4. To make sure LENGTH doesn't count space: `LENGTH(TRIM(<string/column>))`<br >
+## 123. LEFT & CONCAT_WS example<br >
+```
+SELECT
+	LEFT(department, 3) AS short_dept_name,
+	employee_id,
+	CONCAT_WS(' ', first_name, last_name) AS full_name
+FROM employees;
+
+--	get short department name and full name of employee
+```
+## 124. UPPER() & LOWER()<br >
+```
+SELECT
+	CASE
+		WHEN LENGTH(COALSECE(name, '')) > 0 THEN CONCAT(UPPER(LEFT(name, 1)), LOWER(SUBSTRING(name, 2)))
+		ELSE 'Unknown'
+	END AS clean_name
+FROM users;
+
+--	get clean name with first letter capitalized
+```
+1. `UPPER(string)`: return all uppercase string.<br >
+2. `LOWER(string)`: return all lowercase string.<br >
+3. `UPPER(NULL)`,`LOWER(NULL)` return NULL.<br >
+4. UPPER, LOWER can make case Insensitive comparison.<br >
+## 125. COALESCE() & NULLIF() & CAST()<br >
+```
+SELECT
+	e1.employee_id AS employee_id,
+	e1.first_name AS employee_first_name,
+	COALESCE(e2.employee_name, 'Manager') AS manager_name,
+	COALESCE(CAST(e1.manager_id AS CHAR), 'X') AS manager_id
+FROM employees e1
+LEFT JOIN employees e2
+	ON e1.manager_id = e2.employee_id;
+
+--	get employees and their manager names and ids
+--	if no manager, put 'Manager' in manager_name, 'X' in manager_id 
+```
+1. syntax: `COALESCE(<column1_value>, <column2_value>,...)`: return first not NULL value.<br >
+2. COALESCE make sure: <ins>return value is not a NULL.</ins><br >
+3. syntax: `NULLIF(<column1_value>, <column2_value>)`: return NULL if `<column1_value>`=`<column2_value>`.<br >
+4. NULLIF make sure: <ins>no divide by 0</ins> case.<br >
+5. LEFT JOIN is important to work with COALESCE: LEFT JOIN -> NULL, let COALESCE fill default value.<br >
+## 126. CTE to find product price larger than average price in category<br >
+```
+WITH avg_cate_price AS (
+	SELECT category, AVG(unit_price) AS avg_price
+	FROM products
+	GROUP BY category
+)
+SELECT
+	p.product_id,
+	p.product_name,
+	p.unit_price,
+	p.category
+FROM products p
+JOIN avg_cate_price a
+	ON p.category = a.category
+	AND p.unit_price > a.avg_price;
+
+--	use CTE to find all products with their price
+--	larger than average price in their category
+```
+1. Use CTE for subquery<br >
+2. if want to FROM multiple tables, use JOIN, LEFT JOIN<br >
+## 127. Window function PARTITION BY<br >
+```
+SELECT
+	product_id,
+	product_name,
+	unit_price,
+	category
+FROM (
+	SELECT
+		product_id,
+		product_name,
+		unit_price,
+		category,
+		AVG(unit_price) OVER (PARTITION BY category) AS cate_avg_price
+	FROM products
+) AS stage1
+WHERE unit_price > cate_avg_price;
+
+--	use Window function and subquery
+--	to  replace CTE and GROUP BY
+--	to find product with price larger than average price in category
+```
+1. `PARTITION BY` = `temp GROUP BY `<br >
+2. `AVG(unit_price) OVER (PARTITION BY category)` = get average unit_price by temperary grouped by category<br >
+## 128. Subquery to find product price larger than average price in category<br >
+```
+SELECT
+	product_id,
+	product_name,
+	unit_price,
+	category
+FROM products p1
+WHERE unit_price > (
+	SELECT AVG(unit_price)
+	FROM products p2
+	WHERE p2.category = p1.category
+);
+
+--	(Not recommended) subquery to
+--	find product price larger than
+--	average price in category
+```
+## 129. Multiple CTEs<br >
+```
+WITH stage1 AS (
+	SELECT
+		DATE_FORMAT(order_date, '%Y-%m') AS month,
+		order_amount AS amount
+	FROM orders
+),
+sales_per_month AS (
+	SELECT
+		month
+		SUM(amount) AS monthly_sales
+	FROM stage1
+	GROUP BY month
+)
+SELECT *
+FROM sales_per_month;
+
+--	multiple CTEs to get monthly sales
+```
+1. Only need <ins>1 WITH</ins> for multiple CTEs.<br >
+2. Every CTE separated by a comma `WITH CTE1 AS(), CTE2 AS()`<br >
+## 130. Window function for incremental average<br >
+```
+WITH month_sales AS (
+	SELECT
+		DATE_FORMAT(order_date, '%Y-%m') AS month,
+		AVG(total_amount) AS amount
+	FROM walmart_orders
+	GROUP BY month
+)
+SELECT
+	month,
+	AVG(amount) OVER (ORDER BY month) AS monthly_average
+FROM month_sales;
+
+-- incremental amount_average by CTE + window function
+```
+## 131. Use CTE find department salary larger than overall average salary<br >
+```
+WITH dep_avg_salary AS (
+	SELECT
+		department,
+		COUNT(DISTINCT employee_id) AS total_employees,
+		AVG(salary) AS avg_salary
+	FROM employees
+	GROUP BY department
+)
+SELECT *
+FROM dep_avg_salary
+WHERE avg_salary > (SELECT AVG(salary) FROM employees);
+
+--	Find how many people in each department that
+--	department average salary higher than overall average salary.
+```
+1. CTE for employee count and average salary in each department.<br >
+2. Filter those department with salary > overall average salary.<br >
+## 132. HAVING to replace CTE<br >
+```
+SELECT
+	department,
+	COUNT(DISTINCT employee_id) AS total_employees,
+	AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > (SELECT AVG(salary) FROM employees);
+
+-- After GROUP BY, HAVING department salary > overall salary.
+```
+1. COUNT employee number and AVG salary based on department<br >
+2. HAVING filter department group for department salary > overall salary<br >
+## 133. Window Function: RANK(), DENSE_RANK(), ROW_NUMBER(), NTILE()<br >
+```
+WITH customer_orders AS (
+	SELECT
+		customer_id,
+		SUM(order_amount) AS order_amount
+	FROM orders
+	GROUP BY customer_id
+)
+SELECT
+	c.customer_id,
+	c.customer_name,
+	a.order_amount,
+	RANK() OVER (ORDER BY a.order_amount DESC) AS "rank"
+FROM customers AS c
+JOIN customer_orders AS a
+	USING(customer_id);
+
+-- get the rank of order_amount with customer_id, customer_name, rank
+```
+1. Window function syntax: `function() OVER (PARTITION BY <column1> ORDER BY <column2> ROWS/RANGE <frame boundary>)`<br >
+	1. `function()` = aggregate function:<br >
+		1. rankers: `RANK()`, `DENSE_RANK()`, `ROW_NUMBER()`, `NTILE()`<br >
+			- rankers view whole table: <ins>not allowed</ins> to add `ROWS/RANGE` and frame boundary keywords: `PRECEDING`, `FOLLOWING`, `UNBOUNDED`, `CURRENT ROW`<br >
+		2. calculators: `SUM()`, `AVG()`, `COUNT()`, `MIN()`, `MAX()`<br >
+			- calculators can have `DESC/ASC(default)` and `ROWS/RANGE` + frame boundary keywords, e.g.:<br >
+				1. `SUM(amount) OVER (ORDER BY date)`: start at beginning and sum up amount till today<br >
+				2. `SUM(amount) OVER (ORDER BY date DESC)`: start at the end and sum up amount reversely till today<br >
+	2. frame boundary keyword: `PRECEDING`, `FOLLOWING`, `UNBOUNDED`, `CURRENT_ROW`<br >
+		1. `UNBOUNDED PRECEDING`: from first row<br >
+		2. `CURRENT ROW`: the current row<br >
+		3. `n PRECEDING / n FOLLOWING`: n rows/values before/after<br >
+		4. `UNBOUNDED FOLLOWING`: to the last row<br >
+	3. ROWS/RANGE<br >
+		1. `ROWS`: physical row as a unit: `AVG(amount) OVER (ORDER BY sale_date ROW 2 PRECEDING) AS three_row_avg`:<br >
+			- avg current row + 2 above rows<br >
+		2. `RANGE`: value range as a unit: `AVG(amount) OVER (ORDER BY sale_date RANGE 2 PRECEDING) AS three_sale_date_avg`:<br >
+			- avg current sale <ins>date</ins> + 2 previous sale <ins>date</ins> => this is moving average<br >
+	4. Examples:<br >
+		1. short: `OVER (ORDER BY date)`<br >
+			- original: `OVER (ORDER BY date RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`<br >
+		2. short: `OVER (ORDER BY date RANGE 2 PRECEDING)`<br >
+			- original: `OVER (ORDER BY date RANGE BETWEEN 2 PRECEDING AND CURRENT ROW)`<br >
+		3. short: `OVER (ORDER BY date ROWS 5 PRECEDING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN 5 PRECEDING AND CURRENT ROW)`<br >
+		4. short: `OVER (ORDER BY date ROWS 1 FOLLOWING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)`<br >
+		5. short: `OVER (ORDER BY date)`<br >
+			- mid: `OVER (ORDER BY date ROWS UNBOUNDED PRECEDING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`<br >
+		6. short: `OVER (ORDER BY date ROWS UNBOUNDED FOLLOWING)`<br >
+			- original: `OVER (ORDER BY date ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)`<br >
+		7. `BETWEEN A AND B` must follow time order: A must earlier than B<br >
+	5. Both PARTITION BY <group>, ORDER BY <value> are optional<br >
+		- e.g. `SUM(amount) OVER ()`: sum up all amounts
+2. window function vs aggregation function:<br >
+	1. `SUM(amount)`: shrink / collapse to 1 row with total amount<br >
+	2. `SUM(amount) OVER()`: keep every row and <ins>append total amount in every row</ins><br >
+3. Use cases:<br >
+	1. running total (cumulative by time) = `SUM(<column>) OVER (ORDER BY <time>)`<br >
+	2. running average (cumulative average) = `AVG(<column>) OVER (ORDER BY <time>)`<br >
+	3. running count (cumulcative count) = `COUNT(<column>) OVER (ORDER BY <time>)`<br >
+4. RANK()/DENSE_RANK()/ROW_NUMBER() syntax: `RANK()/DENSE_RANK()/ROW_NUMBER() OVER (<PARTITION BY year> ORDER BY price DESC)`<br >
+	1. RANK()/DENSE_RANK()/ROW_NUMBER() don't take argument<br >
+	2. RANK()/DENSE_RANK()/ROW_NUMBER() output integer<br >
+	3. orders when tie:<br >
+		1. RANK(): 1st, 2nd, 2nd, <ins>4th</ins><br >
+		2. DENSE_RANK(): 1st, 2nd, 2nd, <ins>3rd</ins><br >
+		3. ROW_NUMBER(): 1st, 2nd, 3rd, 4th: if a tie, ROW_NUMBER random assign<br >
+5. To avoid <ins>NULL</ins> in window function: use `OVER (ORDER BY COALESCE(price, 0))`: to output 0 instead NULL<br >
+6. To find top-selling products every year:<br >
+	1. Use GROUP BY to get total selling every products every year<br >
+    2. Use window function to get DENSE_RANK()<br >
+    ```
+    WITH CTE AS (
+		SELECT product, year, SUM(sales) AS revenue
+    	FROM sales
+    	GROUP BY product, year
+    	ORDER BY year
+    )
+ 	SELECT
+ 		c.*,
+ 		DENSE_RANK() OVER (PARTITION BY year ORDER BY revenue DESC)
+ 	FROM CTE c;
+	```
+7. RANK() DESC vs ASC:<br >
+	- `RANK() OVER (ORDER BY price DESC)`: highest price is rank#1<br >
+	- `RANK() OVER (ORDER BY price ASC)`: lowest price is rank#1<br >
+8. `CAST (sales / SUM(sales) OVER () * 100 AS DECIMAL(10,2))`: calculate what percentage each sales contributes to the total<br >
+## 134. NTILE() & LAG() & LEAD() & FIRST_VALUE() & LAST_VALUE()<br >
+```
+SELECT
+	NTILE(4) OVER (ORDER BY order_amount),
+	LAG(order_amouunt, 1, 0) OVER (ORDER BY order_date),
+	order_amount,
+	LEAD(order_amount, 1) OVER (ORDER BY order_date),
+	FIRST_VALUE(order_amount) OVER (ORDER BY order_date),
+	LAST_VALUE(order_amount) OVER (
+		ORDER BY order_date
+		ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+	)
+FROM orders;
+```
+1. NTILE<br >
+	1. syntax: `NTILE(number of buckets) OVER (<PARTITION BY...> ORDER BY <column>)`<br >
+	2. NTILE means divide rows into n groups with assigned number.<br >
+	3. `NTILE(4) OVER (ORDER BY order_date)` assign number 1, 2, 3, 4 to divide rows into roughly 4 groups order by column order_date.<br >
+2. LAG<br >
+	1. syntax: `LAG(<column1>, offset, default_value:0) OVER (<PARTITION BY...> ORDER BY <column2>)`<br >
+	2. in column2 order, show column1's value <ins>before</ins> current row. (compare to current row, lag 1 column1 value)<br >
+3. LEAD<br >
+	1. syntax: `LEAD(<column1>, offset, default_value) OVER (<PARTITION BY...> ORDER BY <column2>)`<br >
+	2. in column 2 order, show column1's value <ins>after</ins> current row. (compare to current row, 1 column1 value lead)<br >
+4. FIRST_VALUE<br >
+	1. syntax: `FIRST_VALUE(<column1>) OVER (ORDER BY <column2>)`<br >
+	2. same as `FIRST_VALUE(<column1>) OVER ()`: show first column1 value<br >
+5. LAST_VALUE<br >
+	1. syntax: `LAST_VALUE(<column1>) OVER (ORDER BY <column2> ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)`<br >
+	2. same as `LAST_VALUE(<column1>) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)`: show last column1 value<br >
+	3. LAST_VALUE default return <ins>current row value</ins> => we have to always use `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`<br >
+## 135. CTE vs Window function<br >
+- Use CTE to find employee salary difference based on their average department salary:<br >
+```
+WITH avg_dep_salary AS (
+	SELECT
+		AVG(salary) AS avg_department_salary,
+		department
+	FROM employees
+	GROUP BY department
+)
+SELECT
+	e.first_name,
+	e.last_name,
+	e.salary,
+	a.avg_department_salary,
+	e.salary - a.avg_department_salary AS salary_difference
+FROM employees e
+JOIN avg_dep_salary a
+	USING(department);
+```
+- Use window function instead of CTE:<br >
+```
+SELECT
+	first_name,
+	last_name,
+	salary,
+	AVG(salary) OVER (PARTITION BY department) AS avg_department_salary
+	salary - AVG(salary) OVER (PARTITION BY department) AS salary_difference
+FROM employees e;
+```
+1. In window function version, because `avg_department_salary` and `salary_difference` create in the same `SELECT`, we have to write window function twice, cannot refer `avg_department_salary` to calculate `salary_difference`<br >
+2. window function can be an item to calculate in `SELECT`<br >
+3. CTE: better for maintain, this window function: better for quickly show data<br >
+## 136. ROW_NUMBER()<br >
+```
+SELECT
+	ROW_NUMBER() OVER (ORDER BY order_amount DESC) AS row_num,
+	order_id,
+	customer_id,
+	order_date,
+	order_amount
+FROM orders
+ORDER BY order_amount DESC
+LIMIT 3;
+
+--	find the 3 largest order_amount order
+```
+1. Reminder: ROW_NUMBER assign unique number<br >
+## 137. RANK()<br >
+```
+SELECT
+	RANK() OVER (
+		PARTITION BY department
+		ORDER BY salary DESC
+	) AS rank,
+	first_name,
+	last_name,
+	department,
+	salary
+FROM employees;
+
+--	Ranking salary in each department
+```
+## 138. LEAD()<br >
+```
+SELECT
+	product_name,
+	unit_price,
+	LEAD(product_name, 1, 'X') OVER (
+		PARTITION BY category
+		ORDER BY unit_price ASC
+	) AS next_product_name,
+	LEAD(unit_price, 1, 0) OVER (
+		PARTITION BY category
+		ORDER BY unit_price ASC
+	) AS next_product_price,
+	category
+FROM products;
+
+--	In each category, show product (product_name and unit_price) of the next higher price 
+```
+Syntax: `LEAD(<column>, <offset>, <default value>)`<br >
+## 139. LAG()<br >
+```
+SELECT
+	order_id,
+	order_date,
+	order_amount,
+	LAG(order_date, 1, NULL) OVER (
+		PARTITION BY customer_id
+		ORDER BY order_date
+	) AS previous_order_date,
+	LAG(order_amount, 1, NULL) OVER (
+		PARTITION BY customer_id
+		ORDER BY order_date
+	) AS previous_order_amount,
+	customer_id
+FROM orders;
+
+--	In each customer_id, show order (order_date and order_amount) of the previous order_date
+```
+Syntax: `LAG(<column>, <offset>, <default_value>)`<br >
