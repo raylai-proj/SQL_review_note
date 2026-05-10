@@ -2171,3 +2171,18 @@ LIMIT 3;
 --	find the 3 largest order_amount order
 ```
 1. Reminder: ROW_NUMBER assign unique number<br >
+## 137. RANK()<br >
+```
+SELECT
+	RANK() OVER (
+		PARTITION BY department
+		ORDER BY salary DESC
+	) AS rank,
+	first_name,
+	last_name,
+	department,
+	salary
+FROM employees;
+
+--	Ranking salary in each department
+```
