@@ -2156,3 +2156,18 @@ FROM employees e;
 1. In window function version, because `avg_department_salary` and `salary_difference` create in the same `SELECT`, we have to write window function twice, cannot refer `avg_department_salary` to calculate `salary_difference`<br >
 2. window function can be an item to calculate in `SELECT`<br >
 3. CTE: better for maintain, this window function: better for quickly show data<br >
+## 136. ROW_NUMBER()<br >
+```
+SELECT
+	ROW_NUMBER() OVER (ORDER BY order_amount DESC) AS row_num,
+	order_id,
+	customer_id,
+	order_date,
+	order_amount
+FROM orders
+ORDER BY order_amount DESC
+LIMIT 3;
+
+--	find the 3 largest order_amount order
+```
+1. Reminder: ROW_NUMBER assign unique number<br >
