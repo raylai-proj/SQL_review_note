@@ -2186,3 +2186,22 @@ FROM employees;
 
 --	Ranking salary in each department
 ```
+## 138. LEAD()<br >
+```
+SELECT
+	product_name,
+	unit_price,
+	LEAD(product_name, 1, 'X') OVER (
+		PARTITION BY category
+		ORDER BY unit_price ASC
+	) AS next_product_name,
+	LEAD(unit_price, 1, 0) OVER (
+		PARTITION BY category
+		ORDER BY unit_price ASC
+	) AS next_product_price,
+	category
+FROM products;
+
+--	In each category, show product (product_name and unit_price) of the next higher price 
+```
+Syntax: `LEAD(<column>, <offset>, <default value>)`<br >
