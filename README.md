@@ -2092,4 +2092,34 @@ JOIN customer_orders AS a
 	- `RANK() OVER (ORDER BY price DESC)`: highest price is rank#1<br >
 	- `RANK() OVER (ORDER BY price ASC)`: lowest price is rank#1<br >
 8. `CAST (sales / SUM(sales) OVER () * 100 AS DECIMAL(10,2))`: calculate what percentage each sales contributes to the total<br >
-	
+## 134. NTILE() & LAG() & LEAD() & FIRST_VALUE() & LAST_VALUE()<br >
+```
+SELECT
+	NTILE(4) OVER (ORDER BY order_amount),
+	LAG(order_amouunt, 1, 0) OVER (ORDER BY order_date),
+	order_amount,
+	LEAD(order_amount, 1) OVER (ORDER BY order_date),
+	FIRST_VALUE(order_amount) OVER (ORDER BY order_date),
+	LAST_VALUE(order_amount) OVER (
+		ORDER BY order_date
+		ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+	)
+FROM orders;
+```
+1. NTILE<br >
+	1. syntax: `NTILE(number of buckets) OVER (<PARTITION BY...> ORDER BY <column>)`<br >
+	2. NTILE means divide rows into n groups with assigned number.<br >
+	3. `NTILE(4) OVER (ORDER BY order_date)` assign number 1, 2, 3, 4 to divide rows into roughly 4 groups order by column order_date.<br >
+2. LAG<br >
+	1. syntax: `LAG(<column1>, offset, default_value:0) OVER (<PARTITION BY...> ORDER BY <column2>)`<br >
+	2. in column2 order, show column1's value <ins>before</ins> current row. (compare to current row, lag 1 column1 value)<br >
+3. LEAD<br >
+	1. syntax: `LEAD(<column1>, offset, default_value) OVER (<PARTITION BY...> ORDER BY <column2>)`<br >
+	2. in column 2 order, show column1's value <ins>after</ins> current row. (compare to current row, 1 column1 value lead)<br >
+4. FIRST_VALUE<br >
+	1. syntax: `FIRST_VALUE(<column1>) OVER (ORDER BY <column2>)`<br >
+	2. same as `FIRST_VALUE(<column1>) OVER ()`: show first column1 value<br >
+5. LAST_VALUE<br >
+	1. syntax: `LAST_VALUE(<column1>) OVER (ORDER BY <column2> ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)`<br >
+	2. same as `LAST_VALUE(<column1>) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)`: show last column1 value<br >
+	3. LAST_VALUE default return <ins>current row value</ins> => we have to always use `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`<br >
