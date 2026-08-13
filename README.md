@@ -1701,7 +1701,7 @@ WHERE order_status = 'Completed';
 1. syntax: `CAST(<column> AS <DATA_TYPE>)`: <br >
 	- `CAST(<column> AS CHAR)`<br >
 	- `CAST(<column> AS SIGNED/UNSIGNED)`<br >
-	- `CAST(<column> AS DATETIME/TIMESTAMP)`<br >
+	- `CAST(<column> AS DATE/TIME/DATETIME/TIMESTAMP)`<br >
 	- `CASE(<column> AS BOOLEAN)`<br >
 2. `CAST(<column> AS DATETIME/TIMESTAMP)` is faster than `DATE_FORMAT(<column>, '%Y-%m-%d')`<br >
 3. CAST DATETIME/TIMESTAMP convert to <ins>Date</ins> type, DATE_FORMAT convert to <ins>String</ins> type<br >
